@@ -27,7 +27,9 @@ import { MessagesModule } from './messages/messages.module';
     BrowserModule,
     HttpModule,
 
-    RouterModule.forRoot(routes, {preloadingStrategy: PreloadSelectedModulesList}),
+    RouterModule.forRoot(routes, {
+      useHash: true, preloadingStrategy: PreloadSelectedModulesList
+    }),
     WebStorageModule,
 
     BrowserAnimationsModule,
