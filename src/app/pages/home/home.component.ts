@@ -6,54 +6,28 @@ import { LocalStorage } from 'ngx-store';
   selector: 'app-home',
   template: `
 
-    <mat-expansion-panel class="card"
-      [expanded]="!hideExplanation"
-      (opened)="hideExplanation=false"
-      (closed)="hideExplanation=true">
-
-      <mat-expansion-panel-header>
-        <mat-panel-title>
-          
-          <ng-container *ngIf="!globals.auth.token;else loggedin">
-            <h1>Login</h1>
-          </ng-container>
-          <ng-template #loggedin>
-            <h1>Explanation</h1>
-          </ng-template>
-
-        </mat-panel-title>
-      </mat-expansion-panel-header>
-
-      <p>Participants with letters under each other (same column) will never sit at the same table.</p>
-      <p>More coming soon...</p>
-      <!-- <app-login></app-login> -->
-
-    </mat-expansion-panel>
+    <app-explanation></app-explanation>
 
     <div class="cardsgrid"
       [style.max-width]="!generated ? '600px' : ''"
       [style.margin]="!generated ? '0 auto' : ''">
 
-      <mat-card *ngIf="globals.auth.token">
+      <div *ngIf="globals.auth.token">
         <app-inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
-      </mat-card>
+      </div>
 
-      <mat-card *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
+      <div *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
         <app-rounds #rounds></app-rounds>
-      </mat-card>
+      </div>
 
-      <mat-card *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
+      <div *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
         <app-nameslist #nameslist></app-nameslist>
-      </mat-card>
+      </div>
 
     </div>
 
   `,
   styles: [`
-
-    mat-card, .card {
-      margin: 10px;
-    }
 
     @media (min-width: 650px) {
       .cardsgrid {
@@ -64,23 +38,19 @@ import { LocalStorage } from 'ngx-store';
 
       .cardsgrid > * {
         flex: 1 1 300px;
+        padding: 10px;
       }
     }
-
-    .mat-expansion-panel {
-      max-width: 600px;
-      margin: 10px auto;
-    }
-    
-    .mat-expansion-panel-header-title h1 {
-      margin: 0;
-    }
-
-    mat-expansion-panel-header {
+     
+    :host ::ng-deep mat-expansion-panel-header {
       min-height: 64px !important;
     }
 
-    :host ::ng-deep .mat-expansion-indicator::after {
+    :host ::ng-deep mat-panel-title h1 {
+      margin: 0;
+    }
+
+    :host ::ng-deep .mat-expansion-indicator {
       margin-top: -5px !important;
     }
 
@@ -92,8 +62,6 @@ export class HomeComponent implements OnInit {
   generated = false;
   @ViewChild('rounds') rounds;
   @ViewChild('nameslist') nameslist;
-
-  @LocalStorage() hideExplanation = false;
 
   constructor(
     public globals: GlobalsService
