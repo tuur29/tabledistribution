@@ -1,22 +1,34 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { LocalStorage } from 'ngx-store';
 
 @Component({
   selector: 'app-rounds',
   template: `
 
-    <h1>Table division per round</h1>
+  <mat-expansion-panel
+      [expanded]="!hide"
+      (opened)="hide=false"
+      (closed)="hide=true">
 
-    <div *ngFor="let perm of permutations; let i = index">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h1>Preview</h1>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-      <h2>Round {{i+1}}</h2>
-      <span>{{ letters[i].join(', ') }}</span>
-      <ul *ngFor="let tables of perm">
-        <ng-container *ngFor="let names of tables">
-          <li *ngFor="let name of names" [style.display]="name?'':'none'">{{name}}</li>
-        </ng-container>
-      </ul>
+      <div *ngFor="let perm of permutations; let i = index">
 
-    </div>
+        <h2>Round {{i+1}}</h2>
+        <span>{{ letters[i].join(', ') }}</span>
+        <ul *ngFor="let tables of perm">
+          <ng-container *ngFor="let names of tables">
+            <li *ngFor="let name of names" [style.display]="name?'':'none'">{{name}}</li>
+          </ng-container>
+        </ul>
+
+      </div>
+
+    </mat-expansion-panel>
 
   `,
   styles: [`
@@ -49,6 +61,8 @@ import { Component, OnInit, OnChanges, Input } from '@angular/core';
   `]
 })
 export class RoundsComponent implements OnInit {
+
+  @LocalStorage("hideRounds") hide = false;
 
   permutations: any[];
   letters: any[];

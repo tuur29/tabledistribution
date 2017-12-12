@@ -1,4 +1,5 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { LocalStorage } from 'ngx-store';
 import { removeDiacritics } from 'removeDiacritics';
 
 import { FormControl } from '@angular/forms';
@@ -10,27 +11,40 @@ import 'rxjs/add/operator/map';
   selector: 'app-nameslist',
   template: `
 
-    <h1>Participants</h1>
+  <mat-expansion-panel
+      [expanded]="!hide"
+      (opened)="hide=false"
+      (closed)="hide=true">
 
-    <form>
-      <mat-form-field class="full-width">
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h1>Participants</h1>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-        <button mat-icon-button matPrefix>
-          <mat-icon>search</mat-icon>
+      <!-- Form -->
+
+      <form>
+        <mat-form-field class="full-width">
+
+          <button mat-icon-button matPrefix>
+            <mat-icon>search</mat-icon>
+          </button>
+
+          <input matInput placeholder="Search names" aria-label="Search names" [formControl]="namesCtrl">
+
+          <button *ngIf="namesCtrl.value" matSuffix mat-icon-button aria-label="Reset" (click)="namesCtrl.reset()">
+          <mat-icon>close</mat-icon>
         </button>
 
-        <input matInput placeholder="Search names" aria-label="Search names" [formControl]="namesCtrl">
+        </mat-form-field>
+      </form>
 
-        <button *ngIf="namesCtrl.value" matSuffix mat-icon-button aria-label="Reset" (click)="namesCtrl.reset()">
-        <mat-icon>close</mat-icon>
-      </button>
+      <mat-list>
+        <mat-list-item *ngFor="let name of filteredList | async">{{name}}</mat-list-item>
+      </mat-list>
 
-      </mat-form-field>
-    </form>
-
-    <mat-list>
-      <mat-list-item *ngFor="let name of filteredList | async">{{name}}</mat-list-item>
-    </mat-list>
+    </mat-expansion-panel>
 
   `,
   styles: [`
@@ -64,6 +78,7 @@ import 'rxjs/add/operator/map';
 export class NamesListComponent implements OnInit {
 
   list = [];
+  @LocalStorage("hideNamesList") hide = false;
 
   // variables
   namesCtrl: FormControl = new FormControl();

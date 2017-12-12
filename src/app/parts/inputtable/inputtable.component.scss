@@ -1,0 +1,85 @@
+
+.genform {
+  min-width: 470px;
+  margin-bottom: 20px;
+}
+
+mat-slider {
+  width: 200px;
+}
+
+:host ::ng-deep .mat-slider-thumb-label {
+  top: 20px !important;
+}
+
+:host ::ng-deep .mat-slider-horizontal .mat-slider-thumb-label-text {
+  transform: rotate(-225deg) !important;
+}
+
+:host ::ng-deep .mat-slider-horizontal.cdk-focused .mat-slider-thumb-label {
+  transform: rotate(225deg) !important;
+}
+
+button {
+  margin: 0 10px;
+}
+
+form {
+  overflow-x: auto;
+  max-width: calc( 100vw - 100px );
+}
+
+.table {
+  margin: 30px auto;
+}
+
+.group {
+  position: relative;
+  display: inline-block;
+  min-height: 100px;
+  vertical-align: top;
+  padding: 10px 20px;
+}
+
+.group.first {
+  clear: left;
+}
+
+.group:not(.first) {
+  border-left: 1px solid black;
+}
+
+.letter {
+  font-size: 80px;
+  top: 50px;
+  right: 30px;
+  position: absolute;
+  opacity: 0.075;
+  text-align: center;
+  -webkit-user-select: none;  
+  -moz-user-select: none;    
+  -ms-user-select: none;      
+  user-select: none;
+}
+
+mat-form-field {
+  display: block;
+  width: 150px;
+}
+
+:host ::ng-deep .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-placeholder {
+  display: none;
+}
+
+:host ::ng-deep .mat-form-field-underline {
+  display: none;
+}
+
+:host ::ng-deep .mat-form-field-infix {
+  border-top: none;
+  padding: 0.2em 0;
+}
+
+p {
+  text-align: center;
+}

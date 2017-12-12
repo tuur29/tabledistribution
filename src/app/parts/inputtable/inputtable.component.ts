@@ -1,128 +1,69 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { GlobalsService } from 'app/services/globals.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
-import { LocalStorageService } from 'ngx-store';
+import { LocalStorage, LocalStorageService } from 'ngx-store';
 
 
 @Component({
   selector: 'app-inputtable',
   template: `
 
-    <!-- Generate Form -->
-    <div class="genform">
-      <h1>Generate new</h1>
-      <span>Number of rounds: </span>
-      <mat-slider #roundsSlider thumbLabel color="primary" min="2" max="7" value="3" tickInterval="1"></mat-slider>
+    <mat-expansion-panel
+      [expanded]="!hide"
+      (opened)="hide=false"
+      (closed)="hide=true">
 
-      <button type="button" (click)="onGenerate(roundsSlider.value)" mat-raised-button color="primary">
-        <mat-icon>refresh</mat-icon> Generate
-      </button>
-    </div>
+      <mat-expansion-panel-header>
+        <mat-panel-title>
+          <h1>Creating</h1>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
 
-    <!-- Output table -->
-    <ng-container *ngIf="roundsCount">
+        <!-- Generate Form -->
+        <div class="genform">
+          <span>Number of rounds: </span>
+          <mat-slider #roundsSlider thumbLabel color="primary" min="2" max="7" value="3" tickInterval="1"></mat-slider>
 
-      <button [style.float]="'right'" (click)="toggleDisable()" mat-raised-button [color]="form.disabled ? 'primary' : 'default'">
-          <mat-icon>lock_outline</mat-icon> Lock
-        </button>
-      <h1>Distributing Participants</h1>
-      <form [formGroup]="form">
-        <div class="table" [style.width]="(195*roundsCount) + 'px'">
-
-          <div formArrayName="groups" *ngFor="let group of form.get('groups')['controls']; let i = index;" class="group {{ i%roundsCount==0 ? 'first' : '' }} {{ i%roundsCount==roundsCount-1 ? 'last' : '' }}">
-
-            <span class="letter">{{ globals.letters[i] }}</span>
-            <mat-form-field [formArrayName]="i" *ngFor="let name of group['controls']; let j = index;">
-              <input matInput placeholder="Name" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)">
-            </mat-form-field>
-
-          </div>
-
+          <button type="button" (click)="onGenerate(roundsSlider.value)" mat-raised-button color="primary">
+            <mat-icon>refresh</mat-icon> Generate
+          </button>
         </div>
-      </form>
 
-      <p>Participants with letters under each other (same column) will never sit at the same table.</p>
-    </ng-container>
+        <!-- Output table -->
+        <ng-container *ngIf="roundsCount">
+
+          <button [style.float]="'right'" (click)="toggleDisable()" mat-raised-button [color]="form.disabled ? 'primary' : 'default'">
+              <mat-icon>lock_outline</mat-icon> Lock
+            </button>
+          <h1>Distribute Participants</h1>
+          <form [formGroup]="form">
+            <div class="table" [style.width]="(195*roundsCount) + 'px'">
+
+              <div formArrayName="groups" *ngFor="let group of form.get('groups')['controls']; let i = index;" class="group {{ i%roundsCount==0 ? 'first' : '' }} {{ i%roundsCount==roundsCount-1 ? 'last' : '' }}">
+
+                <span class="letter">{{ globals.letters[i] }}</span>
+                <mat-form-field [formArrayName]="i" *ngFor="let name of group['controls']; let j = index;">
+                  <input matInput placeholder="Name" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)">
+                </mat-form-field>
+
+              </div>
+
+            </div>
+          </form>
+
+          <p>Participants with letters under each other (same column) will never sit at the same table.</p>
+        </ng-container>
+
+      </mat-expansion-panel>
 
   `,
-  styles: [`
-
-    .genform {
-      margin-bottom: 20px;
-    }
-
-    mat-slider {
-      width: 200px;
-    }
-
-    button {
-      margin: 0 10px;
-    }
-
-    form {
-      overflow-x: auto;
-    }
-
-    .table {
-      margin: 30px auto;
-    }
-
-    .group {
-      position: relative;
-      display: inline-block;
-      min-height: 100px;
-      vertical-align: top;
-      padding: 10px 20px;
-    }
-
-    .group.first {
-      clear: left;
-    }
-
-    .group:not(.first) {
-      border-left: 1px solid black;
-    }
-
-    .letter {
-      font-size: 80px;
-      top: 50px;
-      right: 30px;
-      position: absolute;
-      opacity: 0.075;
-      text-align: center;
-      -webkit-user-select: none;  
-      -moz-user-select: none;    
-      -ms-user-select: none;      
-      user-select: none;
-    }
-
-    mat-form-field {
-      display: block;
-      width: 150px;
-    }
-
-    :host ::ng-deep .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-placeholder {
-      display: none;
-    }
-
-    :host ::ng-deep .mat-form-field-underline {
-      display: none;
-    }
-
-    :host ::ng-deep .mat-form-field-infix {
-      border-top: none;
-      padding: 0.2em 0;
-    }
-
-    p {
-      text-align: center;
-    }
-
-  `]
+  styleUrls: ['./inputtable.component.scss']
 })
 export class InputTableComponent implements OnInit {
 
   @Output() onGenerateTable = new EventEmitter<any>();
+
+  @LocalStorage("hideInputTable") hide = false;
 
   form: FormGroup;
   roundsCount = 0;
