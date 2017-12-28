@@ -103,7 +103,7 @@ export class InputTableComponent implements OnInit {
 
   onGenerate(rounds: any) {
     if (this.form.dirty) {
-      let c = confirm("Dit zal alle namen verwijderen");
+      let c = confirm("Are you sure? This will remove all data.");
       if (!c) return;
     }
 
