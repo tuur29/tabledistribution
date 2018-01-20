@@ -9,7 +9,7 @@ import { MessagesService } from '../../messages/messages.service';
     <mat-card>
       <h1>Error</h1>
       <p>It looks like you either don't have access to this page, or it doesn't exist.</p>
-      <p><a routerLink="/">Terug naar homepagina</a></p>
+      <p><a routerLink="/">Back to homepage</a></p>
       <!-- <app-login [redirect]="redirecturl"></app-login> -->
     </mat-card>
 
@@ -46,7 +46,7 @@ export class ErrorComponent implements OnInit, OnDestroy {
       // } else {
       //   // general error with retry
       //   let old = this.router.url;
-      //   this.messagesService.send('Er ging iets fout.', 'OPNIEUW').subscribe(() => {
+      //   this.messagesService.send('Something went wrong', 'RETRY').subscribe(() => {
       //     this.router.navigate([old]);
       //   });
       //   this.router.navigate(['/']);

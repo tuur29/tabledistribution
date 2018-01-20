@@ -17,7 +17,7 @@ export class MessagesService {
   }
 
   public sendServerError(noAction?: boolean): Observable<void> {
-    return this.send("Server is niet bereikbaar!", noAction ? '' : 'HERLADEN', 1000*60*60);
+    return this.send("Server is not available!", noAction ? '' : 'RELOAD', 1000*60*60);
   }
 
 }
