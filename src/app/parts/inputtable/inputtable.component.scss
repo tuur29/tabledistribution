@@ -1,23 +1,11 @@
 
 .genform {
   min-width: 470px;
-  margin-bottom: 20px;
+  margin: 20px 0;
 }
 
 mat-slider {
   width: 200px;
-}
-
-:host ::ng-deep .mat-slider-thumb-label {
-  top: 20px !important;
-}
-
-:host ::ng-deep .mat-slider-horizontal .mat-slider-thumb-label-text {
-  transform: rotate(-225deg) !important;
-}
-
-:host ::ng-deep .mat-slider-horizontal.cdk-focused .mat-slider-thumb-label {
-  transform: rotate(225deg) !important;
 }
 
 button {
