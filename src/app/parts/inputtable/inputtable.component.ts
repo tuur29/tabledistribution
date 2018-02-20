@@ -22,7 +22,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
         <!-- Generate Form -->
         <div class="genform">
           <span>Number of rounds: </span>
-          <mat-slider #roundsSlider thumbLabel color="primary" min="2" max="7" value="3" tickInterval="1"></mat-slider>
+          <mat-slider #roundsSlider thumbLabel color="primary" min="2" max="5" value="3" tickInterval="1"></mat-slider>
 
           <button type="button" (click)="onGenerate(roundsSlider.value)" mat-raised-button color="primary">
             <mat-icon>refresh</mat-icon> Generate

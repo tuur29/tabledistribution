@@ -150,22 +150,47 @@ export class HomeComponent implements OnInit {
           ]
         ];
 
+      case 5: 
+      return [
+        [
+          [arr[0], arr[1], arr[2], arr[3], arr[4]],
+          [arr[5], arr[6], arr[7], arr[8], arr[9]],
+          [arr[10], arr[11], arr[12], arr[13], arr[14]],
+          [arr[15], arr[16], arr[17], arr[18], arr[19]],
+          [arr[20], arr[21], arr[22], arr[23], arr[24]]
+        ],
+        [
+          [arr[0], arr[6], arr[12], arr[18], arr[24]],
+          [arr[1], arr[7], arr[13], arr[19], arr[20]],
+          [arr[2], arr[8], arr[14], arr[15], arr[21]],
+          [arr[3], arr[9], arr[10], arr[16], arr[22]],
+          [arr[4], arr[5], arr[11], arr[17], arr[23]]
+        ],
+        [
+          [arr[0], arr[11], arr[22], arr[8], arr[19]],
+          [arr[5], arr[16], arr[2], arr[13], arr[24]],
+          [arr[10], arr[21], arr[7], arr[18], arr[4]],
+          [arr[15], arr[1], arr[12], arr[23], arr[9]],
+          [arr[20], arr[6], arr[17], arr[3], arr[14]]
+        ],
+        [
+          [arr[0], arr[16], arr[7], arr[23], arr[14]],
+          [arr[5], arr[21], arr[12], arr[3], arr[19]],
+          [arr[10], arr[1], arr[17], arr[8], arr[24]],
+          [arr[15], arr[6], arr[22], arr[13], arr[4]],
+          [arr[20], arr[11], arr[2], arr[18], arr[9]]
+        ],
+        [
+          [arr[0], arr[21], arr[17], arr[13], arr[9]],
+          [arr[5], arr[1], arr[22], arr[18], arr[14]],
+          [arr[10], arr[6], arr[2], arr[23], arr[19]],
+          [arr[15], arr[11], arr[7], arr[3], arr[24]],
+          [arr[20], arr[16], arr[12], arr[8], arr[4]]
+        ]
+      ];
+
     }
 
   }
-
-  // Calculate more:
-  // function alphabetPosition(text) {
-  //   return text.toLowerCase().split('')
-  //     .filter( c => c >= 'a' & c <= 'z' )
-  //     .map( c => c.charCodeAt(0) - 'a'.charCodeAt(0))
-  //     .join(' ');
-  // }
-  // console.log(alphabetPosition(`
-  //   {{A,B,C},{D,E,F},{G,H,I}}, 
-  //   {{A,E,I},{B,F,G},{C,D,H}}, 
-  //   {{A,F,H},{B,D,I},{C,E,G}}, 
-  //   {{A,D,G},{B,E,H},{C,F,I}}.
-  // `));
 
 }
