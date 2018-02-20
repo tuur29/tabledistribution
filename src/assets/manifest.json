@@ -1,0 +1,16 @@
+{
+  "name": "Table Distrubution",
+  "description": "An app that helps you spread participants across a tables during a number of rounds.",
+  "icons": [
+    {
+      "src": "assets.favicon.png",
+      "sizes": "48x48",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#039BE5",
+  "background_color": "#eee",
+  "lang": "en-US",
+  "display": "standalone",
+  "orientation": "any"
+}
