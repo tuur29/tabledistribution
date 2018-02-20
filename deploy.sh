@@ -6,6 +6,7 @@ sed -i -e 's/\/dist/#\/dist/g' .gitignore
 ng build -prod --base-href "./"
 read -n1 -rep $'\nPress key if angular app has build successfully\n' key
 cp "dist/index.html" "dist/404.html"
+npm run sw
 
 # Deploy to Github Pages
 git add .
