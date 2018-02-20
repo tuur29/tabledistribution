@@ -21,7 +21,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
 
         <!-- Generate Form -->
         <div class="genform">
-          <span>Number of rounds: </span>
+          <span>Largest number of either rounds or tables: </span>
           <mat-slider #roundsSlider thumbLabel color="primary" min="2" max="5" value="3" tickInterval="1"></mat-slider>
 
           <button type="button" (click)="onGenerate(roundsSlider.value)" mat-raised-button color="primary">
@@ -51,7 +51,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
             </div>
           </form>
 
-          <p>Participants with letters under each other (same column) will never sit at the same table.</p>
+          <p>Participants in the same column will never sit at the same table.</p>
         </ng-container>
 
       </mat-expansion-panel>
