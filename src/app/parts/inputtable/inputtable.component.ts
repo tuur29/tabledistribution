@@ -42,7 +42,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
               <div formArrayName="groups" *ngFor="let group of form.get('groups')['controls']; let i = index;" class="group {{ i%roundsCount==0 ? 'first' : '' }} {{ i%roundsCount==roundsCount-1 ? 'last' : '' }}">
 
                 <span class="letter">{{ globals.letters[i] }}</span>
-                <mat-form-field [formArrayName]="i" *ngFor="let name of group['controls']; let j = index;">
+                <mat-form-field [formArrayName]="i" *ngFor="let name of group['controls']; let j = index;" [style.opacity]="form.disabled && name.value?.length<1 ? 0 : 1">
                   <input matInput placeholder="Name" [tabindex]="j==0?j:-1" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)" (keyup.enter)="focusNext($event)">
                 </mat-form-field>
 
