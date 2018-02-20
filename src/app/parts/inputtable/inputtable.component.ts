@@ -43,7 +43,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
 
                 <span class="letter">{{ globals.letters[i] }}</span>
                 <mat-form-field [formArrayName]="i" *ngFor="let name of group['controls']; let j = index;">
-                  <input matInput placeholder="Name" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)" (keyup.enter)="focusNext($event)">
+                  <input matInput placeholder="Name" [tabindex]="j==0?j:-1" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)" (keyup.enter)="focusNext($event)">
                 </mat-form-field>
 
               </div>
@@ -119,39 +119,40 @@ export class InputTableComponent implements OnInit {
 
   blurName(event) {
 
-    let arrayindex = Array.prototype.indexOf.call(event.path[6].children, event.path[5]);
+    let arrayindex = Array.prototype.indexOf.call(this.getParent(event.target,6).children, this.getParent(event.target,5));
     const control = <FormArray> this.form.controls['groups']['controls'][arrayindex];
-    let itemindex = Array.prototype.indexOf.call(event.path[5].children, event.path[4]) -1;
+    let itemindex = Array.prototype.indexOf.call(this.getParent(event.target,5).children, this.getParent(event.target,4)) -1;
 
     // remove control if empty & there are other empty controls
     if (event.target.value == ""
-      && event.path[5].children[event.path[5].children.length-1].value != ""
-      && event.path[5].children.length > 2 )
+      && this.getParent(event.target,5).nextElementSibling != undefined )
       control.removeAt(itemindex);
       
   }
 
   focusName(event) {
-    let arrayindex = Array.prototype.indexOf.call(event.path[6].children, event.path[5]);
+
+    let arrayindex = Array.prototype.indexOf.call(this.getParent(event.target,6).children, this.getParent(event.target,5));
     const control = <FormArray> this.form.controls['groups']['controls'][arrayindex];
-    let itemindex = Array.prototype.indexOf.call(event.path[5].children, event.path[4]);
-    let previousSibling = event.path[5].children[itemindex-1];
+    let itemindex = Array.prototype.indexOf.call(this.getParent(event.target,5).children, this.getParent(event.target,4));
+    let previousSibling = this.getParent(event.target,5).children[itemindex-1];
     
     if ( itemindex > 1 && (previousSibling.querySelectorAll('input')[0].value == ""
-      && itemindex == event.path[5].children.length -1) )
+      && itemindex == this.getParent(event.target,5).children.length -1) )
       return;
 
     // add new control if no empty controls
     if (event.target.value == ""
-      && itemindex == event.path[5].children.length -1)
+      && itemindex == this.getParent(event.target,5).children.length -1)
       control.push(new FormControl());
     
   }
 
   focusNext(event) {
-    let formField = event.target.parentNode.parentNode.parentNode.parentNode;
+    if (event.target.value == "") return;
+    let formField = this.getParent(event.target, 4);
     let nextFormField = formField.nextElementSibling;
-    let nextInput = nextFormField.childNodes[0].childNodes[0].childNodes[1].childNodes[1];
+    let nextInput = this.getFormFieldInput(nextFormField);
     nextInput.focus();
   }
 
@@ -160,6 +161,18 @@ export class InputTableComponent implements OnInit {
       this.form.enable();
     else
       this.form.disable();
+  }
+
+  private getParent(element, index: number) {
+    let parent = element;
+    for (let i=0; i<index; i++)
+      parent = parent.parentNode;
+
+    return parent;
+  }
+
+  private getFormFieldInput(element) {
+    return element.childNodes[0].childNodes[0].childNodes[1].childNodes[1];
   }
 
 }
