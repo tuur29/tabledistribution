@@ -43,7 +43,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
 
                 <span class="letter">{{ globals.letters[i] }}</span>
                 <mat-form-field [formArrayName]="i" *ngFor="let name of group['controls']; let j = index;">
-                  <input matInput placeholder="Name" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)">
+                  <input matInput placeholder="Name" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)" (keyup.enter)="focusNext($event)">
                 </mat-form-field>
 
               </div>
@@ -146,6 +146,13 @@ export class InputTableComponent implements OnInit {
       && itemindex == event.path[5].children.length -1)
       control.push(new FormControl());
     
+  }
+
+  focusNext(event) {
+    let formField = event.target.parentNode.parentNode.parentNode.parentNode;
+    let nextFormField = formField.nextElementSibling;
+    let nextInput = nextFormField.childNodes[0].childNodes[0].childNodes[1].childNodes[1];
+    nextInput.focus();
   }
 
   toggleDisable() {
