@@ -71,6 +71,7 @@ export class RoundsComponent implements OnInit {
   ngOnInit() {}
 
   updateTable(permutations: any[], letters: any[]) {
+    if (!permutations || !letters) return;
     this.letters = letters.map( (g) => g.map((l)=> l.join('')) );
     this.permutations = permutations;
   }
