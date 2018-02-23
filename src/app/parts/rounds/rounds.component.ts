@@ -21,8 +21,10 @@ import { LocalStorage } from 'ngx-store';
         <h2>Round {{i+1}}</h2>
         <span>{{ letters[i].join(', ') }}</span>
         <ul *ngFor="let tables of perm">
-          <ng-container *ngFor="let names of tables">
-            <li *ngFor="let name of names" [style.display]="name?'':'none'">{{name}}</li>
+          <ng-container *ngFor="let name of tables; let j = index">
+            <li [style.display]="name?'':'none'">
+              <small>{{j+1}}:</small> {{name}}
+            </li>
           </ng-container>
         </ul>
 
@@ -58,6 +60,10 @@ import { LocalStorage } from 'ngx-store';
       border-bottom: 1px solid black;
     }
 
+    small {
+      opacity: 0.5;
+    }
+
   `]
 })
 export class RoundsComponent implements OnInit {
@@ -72,7 +78,15 @@ export class RoundsComponent implements OnInit {
 
   updateTable(permutations: any[], letters: any[]) {
     if (!permutations || !letters) return;
+
     this.letters = letters.map( (g) => g.map((l)=> l.join('')) );
-    this.permutations = permutations;
+    let flattend = permutations.map((round) => {
+      return round.map((table) => {
+        return table.reduce((prev, curr) => {
+          return prev.concat(curr);
+        });
+      });
+    });
+    this.permutations = flattend;
   }
 }
