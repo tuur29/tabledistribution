@@ -97,7 +97,6 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  // TODO: replace hardcoded with programatic solution
   private getCombinations(arr: any[]): any[] {
 
     switch (Math.sqrt(arr.length)) {
