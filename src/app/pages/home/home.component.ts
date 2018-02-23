@@ -8,9 +8,7 @@ import { LocalStorage } from 'ngx-store';
 
     <app-explanation></app-explanation>
 
-    <div class="cardsgrid"
-      [style.max-width]="!generated ? '600px' : ''"
-      [style.margin]="!generated ? '0 auto' : ''">
+    <div class="cardsgrid">
 
       <div *ngIf="globals.auth.token">
         <app-inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
@@ -20,13 +18,13 @@ import { LocalStorage } from 'ngx-store';
         <app-rounds #rounds></app-rounds>
       </div>
 
-      <div *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
-        <app-nameslist #nameslist></app-nameslist>
-      </div>
+      <mat-accordion *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
 
-      <div *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
+        <app-nameslist #nameslist></app-nameslist>
+        &nbsp;
         <app-notes></app-notes>
-      </div>
+
+      </mat-accordion>
 
     </div>
 
@@ -38,16 +36,21 @@ import { LocalStorage } from 'ngx-store';
         display: flex;
         flex-flow: row wrap;
         align-items: start;
+        justify-content: center;
       }
 
       .cardsgrid > * {
-        flex: 1 1 300px;
+        flex: 0 1 400px;
         padding: 10px;
       }
 
       .small {
         max-width: 450px;
       }
+    }
+
+    .cardsgrid > *, .accordion > * {
+      margin: 10px 0;
     }
      
     :host ::ng-deep mat-expansion-panel-header {

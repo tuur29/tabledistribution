@@ -8,7 +8,9 @@ import { LocalStorage } from 'ngx-store';
   <mat-expansion-panel
       [expanded]="!hide"
       (opened)="hide=false"
-      (closed)="hide=true">
+      (closed)="hide=true"
+      [style.minWidth]="minwidth +'px'"
+      >
 
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -53,6 +55,7 @@ import { LocalStorage } from 'ngx-store';
     ul {
       list-style: none;
       padding: 0;
+      min-width: 141px;
     }
 
     ul:not(:last-child) {
@@ -72,6 +75,7 @@ export class RoundsComponent implements OnInit {
 
   permutations: any[];
   letters: any[];
+  minwidth: number;
 
   constructor() {}
   ngOnInit() {}
@@ -87,6 +91,14 @@ export class RoundsComponent implements OnInit {
         });
       });
     });
+
+    if (flattend.length <= 3)
+      this.minwidth = flattend.length*200;
+    else if (flattend.length%2 != 0)
+      this.minwidth = (flattend.length-1)*200 - flattend.length*30;
+    else
+      this.minwidth = flattend.length/2*200 + flattend.length*15;
+    
     this.permutations = flattend;
   }
 }

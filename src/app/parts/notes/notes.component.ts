@@ -18,7 +18,7 @@ import { LocalStorage } from 'ngx-store';
       </mat-expansion-panel-header>
 
       <mat-form-field>
-        <textarea [(ngModel)]="notes" matInput matTextareaAutosize matAutosizeMinRows="4" matAutosizeMaxRows="20"></textarea>
+        <textarea [(ngModel)]="notes" matInput matTextareaAutosize matAutosizeMinRows="4" matAutosizeMaxRows="27"></textarea>
       </mat-form-field>
 
       </mat-expansion-panel>
@@ -34,7 +34,7 @@ import { LocalStorage } from 'ngx-store';
 })
 export class NotesComponent implements OnInit {
 
-  @LocalStorage("hideNotes") hide = false;
+  @LocalStorage("hideNotes") hide = true;
   @LocalStorage("notes") notes = "";
 
   constructor() {}
