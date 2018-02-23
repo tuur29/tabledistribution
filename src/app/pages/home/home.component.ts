@@ -20,8 +20,12 @@ import { LocalStorage } from 'ngx-store';
         <app-rounds #rounds></app-rounds>
       </div>
 
-      <div *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
+      <div *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
         <app-nameslist #nameslist></app-nameslist>
+      </div>
+
+      <div *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
+        <app-notes></app-notes>
       </div>
 
     </div>
@@ -39,6 +43,10 @@ import { LocalStorage } from 'ngx-store';
       .cardsgrid > * {
         flex: 1 1 300px;
         padding: 10px;
+      }
+
+      .small {
+        max-width: 450px;
       }
     }
      
