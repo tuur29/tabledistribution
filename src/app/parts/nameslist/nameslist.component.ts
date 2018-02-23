@@ -18,7 +18,7 @@ import 'rxjs/add/operator/map';
 
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <h1>Participants</h1>
+          <h1>Participants <small>({{list.length}})</small></h1>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
