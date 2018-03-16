@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { LocalStorageService } from 'ngx-store';
 import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
 import { DialogsService } from '../dialogs/dialogs.service';
 
 @Injectable()
@@ -8,6 +9,7 @@ export class SavesService {
 
   list: Map<string, any> = new Map();
   ready;
+  private loadsubject = new Subject<any>();
 
   constructor(
     public localStorageService: LocalStorageService,
@@ -38,7 +40,11 @@ export class SavesService {
   }
 
   load(name: string) {
-    
+    this.loadsubject.next(this.list.get(name));
+  }
+
+  onLoad(): Observable<any> {
+     return this.loadsubject.asObservable();
   }
 
   delete(name: string) {

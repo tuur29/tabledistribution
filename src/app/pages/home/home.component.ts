@@ -65,6 +65,16 @@ import { SavesService } from 'app/services/saves.service';
       }
     }
 
+    mat-drawer-container {
+      min-height: calc( 100vh - 64px);
+    }
+
+    @media (max-width: 600px) {
+      mat-drawer-container {
+        min-height: calc( 100vh - 56px);
+      }
+    }
+
     mat-drawer {
       width: 300px;
       padding: 10px;

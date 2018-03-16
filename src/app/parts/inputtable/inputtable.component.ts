@@ -1,5 +1,6 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
 import { GlobalsService } from 'app/services/globals.service';
+import { SavesService } from 'app/services/saves.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { LocalStorage, LocalStorageService } from 'ngx-store';
 
@@ -70,30 +71,24 @@ export class InputTableComponent implements OnInit {
 
   constructor(
     public globals: GlobalsService,
+    public saves: SavesService,
     private fb: FormBuilder,
     private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit() {
-    this.makeForm();
+
+    this.saves.onLoad().subscribe((table) => {
+      this.loadTable(table);
+    });
+
+    this.loadTable(this.localStorageService.get('table'));
   }
 
   makeForm() {
     this.form = this.fb.group({
       groups: this.fb.array([])
     });
-
-    let table = this.localStorageService.get('table');
-    if (table) {
-      this.roundsCount = Math.sqrt(table.length);
-      const control = <FormArray> this.form.controls['groups'];
-      for (let i=0; i<table.length; i++) 
-        control.push( this.fb.array(table[i]) );
-
-      setTimeout(() => {
-        this.onGenerateTable.emit(this.form.value.groups);
-      }, 10);
-    }
 
     this.form.valueChanges.subscribe(() => {
       this.localStorageService.set("table",this.form.value.groups);
@@ -134,6 +129,21 @@ export class InputTableComponent implements OnInit {
       this.makeForm();
     }
 
+  }
+
+  loadTable(table) {
+    if (table) {
+      this.roundsCount = Math.sqrt(table.length);
+      this.makeForm();
+      
+      const control = <FormArray> this.form.controls['groups'];
+      for (let i=0; i<table.length; i++) 
+        control.push( this.fb.array(table[i]) );
+
+      setTimeout(() => {
+        this.onGenerateTable.emit(this.form.value.groups);
+      }, 10);
+    }
   }
 
   blurName(event) {
