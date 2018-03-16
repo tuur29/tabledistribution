@@ -6,6 +6,7 @@ import { CommonModule } from '@angular/common';
 import { MaterialModule } from '../material.module';
 
 import { SaveNameDialog } from './savename.component';
+import { ConfirmDialog } from './confirm.component';
 
 @NgModule({
   imports: [
@@ -14,16 +15,19 @@ import { SaveNameDialog } from './savename.component';
     MaterialModule
   ],
   exports: [
-    SaveNameDialog
+    SaveNameDialog,
+    ConfirmDialog
   ],
   declarations: [
-    SaveNameDialog
+    SaveNameDialog,
+    ConfirmDialog
   ],
   providers: [
     DialogsService,
   ],
   entryComponents: [
-    SaveNameDialog
+    SaveNameDialog,
+    ConfirmDialog
   ],
 })
 export class DialogsModule { }

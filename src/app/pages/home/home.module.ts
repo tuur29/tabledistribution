@@ -9,6 +9,7 @@ import { InputTableModule } from '../../parts/inputtable/inputtable.module';
 import { RoundsModule } from '../../parts/rounds/rounds.module';
 import { NamesListModule } from '../../parts/nameslist/nameslist.module';
 import { NotesModule } from '../../parts/notes/notes.module';
+import { SavesListModule } from '../../parts/saveslist/saveslist.module';
 
 import { HomeComponent } from './home.component';
 
@@ -24,7 +25,8 @@ import { HomeComponent } from './home.component';
     InputTableModule,
     RoundsModule,
     NamesListModule,
-    NotesModule
+    NotesModule,
+    SavesListModule
   ],
   declarations: [
     HomeComponent

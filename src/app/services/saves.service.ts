@@ -6,33 +6,53 @@ import { DialogsService } from '../dialogs/dialogs.service';
 @Injectable()
 export class SavesService {
 
-  current;
+  list: Map<string, any> = new Map();
+  ready;
 
   constructor(
     public localStorageService: LocalStorageService,
     public dialogs: DialogsService
   ) {
-    
+
+    this.ready = new Promise((resolve) => {
+      this.localStorageService.keys.forEach((key) => {
+        if (key.indexOf("ngx_save_") == 0) {
+          let save = this.localStorageService.get(key.replace("ngx_",""));
+          this.list.set(key.replace("ngx_save_",""), save);
+        }
+      });
+      resolve(this.list);
+    });
+
   }
 
-  newSave() {
+  newSave(data: any) {
     this.dialogs.savename().subscribe((name) => {
-      console.log(name);
       if (name)
-        this.save(name);
+        this.save(name, data);
     });
   }
 
-  load(key: string) {
-    // get save by key
-  }
-
   getAll() {
-
+    return this.ready;
   }
 
-  private save(name: string) {
+  load(name: string) {
+    
+  }
 
+  delete(name: string) {
+    this.dialogs.confirm().subscribe((result) => {
+      if (result) {
+        this.list.delete(name);
+        this.localStorageService.remove('save_'+name);
+      }
+    });
+  }
+
+  private save(name: string, data: any) {
+    this.list.set(name, data);
+    this.localStorageService.set("save_"+name, data);
   }
 
 }

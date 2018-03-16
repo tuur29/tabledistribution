@@ -11,11 +11,11 @@ import { SavesService } from 'app/services/saves.service';
       <mat-drawer #drawer mode="over" position="end">
         <h2>
           Saved
-          <button mat-icon-button (click)="saves.newSave()" class="float-right">
+          <button mat-icon-button (click)="saves.newSave(currenttable)" class="float-right">
             <mat-icon>save</mat-icon>
           </button>
         </h2>
-        <!-- <app-saveslist></app-saveslist> -->
+        <app-saveslist></app-saveslist>
       </mat-drawer>
 
       <div class="container">
@@ -95,6 +95,7 @@ import { SavesService } from 'app/services/saves.service';
 export class HomeComponent implements OnInit {
 
   generated = false;
+  currenttable;
   @ViewChild('rounds') rounds;
   @ViewChild('nameslist') nameslist;
   @ViewChild('drawer') drawer;
@@ -109,17 +110,18 @@ export class HomeComponent implements OnInit {
   }
 
   onGenerateTable(table: any) {
+    this.currenttable = table;
     this.generated = true;
-    table = table
+    let newtable = table
       .map((g, i) => g
         .filter((name) => name!=null && name!='')
         .map((name) => name + ' ('+this.globals.letters[i]+')')
       );
 
-    this.nameslist.updateTable(table);
+    this.nameslist.updateTable(newtable);
     this.rounds.updateTable(
-      this.getCombinations(table),
-      this.getCombinations(this.globals.letters.slice(0, table.length))
+      this.getCombinations(newtable),
+      this.getCombinations(this.globals.letters.slice(0, newtable.length))
     );
   }
 
