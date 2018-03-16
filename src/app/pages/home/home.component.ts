@@ -1,32 +1,48 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { GlobalsService } from 'app/services/globals.service';
-import { LocalStorage } from 'ngx-store';
+import { SavesService } from 'app/services/saves.service';
 
 @Component({
   selector: 'app-home',
   template: `
 
-    <app-explanation></app-explanation>
+    <mat-drawer-container>
 
-    <div class="cardsgrid">
+      <mat-drawer #drawer mode="over" position="end">
+        <h2>
+          Saved
+          <button mat-icon-button (click)="saves.newSave()" class="float-right">
+            <mat-icon>save</mat-icon>
+          </button>
+        </h2>
+        <!-- <app-saveslist></app-saveslist> -->
+      </mat-drawer>
 
-      <div *ngIf="globals.auth.token">
-        <app-inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
+      <div class="container">
+        <app-explanation></app-explanation>
+
+        <div class="cardsgrid">
+
+          <div *ngIf="globals.auth.token">
+            <app-inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
+          </div>
+
+          <div *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
+            <app-rounds #rounds></app-rounds>
+          </div>
+
+          <mat-accordion *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
+
+            <app-nameslist #nameslist></app-nameslist>
+            &nbsp;
+            <app-notes></app-notes>
+
+          </mat-accordion>
+
+        </div>
       </div>
 
-      <div *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
-        <app-rounds #rounds></app-rounds>
-      </div>
-
-      <mat-accordion *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
-
-        <app-nameslist #nameslist></app-nameslist>
-        &nbsp;
-        <app-notes></app-notes>
-
-      </mat-accordion>
-
-    </div>
+    </mat-drawer-container>
 
   `,
   styles: [`
@@ -49,6 +65,11 @@ import { LocalStorage } from 'ngx-store';
       }
     }
 
+    mat-drawer {
+      width: 300px;
+      padding: 10px;
+    }
+
     .cardsgrid > *, .accordion > * {
       margin: 10px 0;
     }
@@ -61,6 +82,10 @@ import { LocalStorage } from 'ngx-store';
       margin: 0;
     }
 
+    :host ::ng-deep .mat-drawer-backdrop.mat-drawer-shown {
+      background-color: rgba(0, 0, 0, 0.4);
+    }
+
     :host ::ng-deep .mat-expansion-indicator {
       margin-top: -5px !important;
     }
@@ -69,17 +94,18 @@ import { LocalStorage } from 'ngx-store';
 })
 export class HomeComponent implements OnInit {
 
-  title: string;
   generated = false;
   @ViewChild('rounds') rounds;
   @ViewChild('nameslist') nameslist;
+  @ViewChild('drawer') drawer;
 
   constructor(
-    public globals: GlobalsService
-  ) {}
+    public globals: GlobalsService,
+    public saves: SavesService
+  ) { }
 
   ngOnInit() {
-    this.title = window.document.title;
+    this.globals.drawer = this.drawer;
   }
 
   onGenerateTable(table: any) {

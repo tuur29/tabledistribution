@@ -14,6 +14,7 @@ export class GlobalsService {
   
   public loading = false;
   public failed = false;
+  public drawer: any = null;
 
   constructor(
     private http: Http,

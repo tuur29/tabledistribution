@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 import { GlobalsService } from 'app/services/globals.service';
 
 @Component({
@@ -13,6 +13,10 @@ import { GlobalsService } from 'app/services/globals.service';
       </a>
 
       <span class="spacer"></span>
+      
+      <button type="button" mat-icon-button (click)="globals.drawer.toggle()">
+        <mat-icon>star</mat-icon>
+      </button>
     </mat-toolbar>
 
   `,
@@ -61,7 +65,6 @@ export class HeaderComponent implements OnInit {
     this.title = window.document.title;
   }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

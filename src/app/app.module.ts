@@ -17,6 +17,7 @@ import { HeaderModule } from './parts/header/header.module';
 
 import { CanDeactivateGuard } from './services/candeactivate-guard.service';
 import { GlobalsService } from './services/globals.service';
+import { SavesService } from './services/saves.service';
 
 import { DialogsModule } from './dialogs/dialogs.module';
 import { MessagesModule } from './messages/messages.module';
@@ -45,6 +46,7 @@ import { MessagesModule } from './messages/messages.module';
     PreloadSelectedModulesList,
     CanDeactivateGuard,
     GlobalsService,
+    SavesService
   ],
   bootstrap: [AppComponent],
 })

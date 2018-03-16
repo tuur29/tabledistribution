@@ -3,7 +3,6 @@ import { Observable } from 'rxjs/Observable';
 
 import { environment } from 'environments/environment';
 import { GlobalsService } from 'app/services/globals.service';
-import { MessagesService } from './messages/messages.service';
 
 @Component({
   selector: 'app',
@@ -21,9 +20,7 @@ import { MessagesService } from './messages/messages.service';
         </div>
       </div>
 
-      <div class="container">
-        <router-outlet></router-outlet>
-      </div>
+      <router-outlet></router-outlet>
 
     </div>
 
@@ -43,8 +40,7 @@ import { MessagesService } from './messages/messages.service';
 })
 export class AppComponent implements OnInit{
   constructor(
-    public globals: GlobalsService,
-    public messagesService: MessagesService
+    public globals: GlobalsService
   ) {}
 
   ngOnInit() {}
