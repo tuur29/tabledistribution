@@ -7,12 +7,20 @@ import { MessagesService } from '../messages/messages.service';
   selector: 'app-savename',
   template: `
     
-    <p>Are you sure?</p>
+    <h3>Are you sure?</h3>
     <button mat-button (click)="dialogRef.close(false)">No</button>
-    <button mat-raised-button color="primary" (click)="dialogRef.close(true)">Yes</button>
+    <button mat-raised-button color="primary" (click)="dialogRef.close(true)" class="float-right">Yes</button>
 
   `,
   styles: [`
+
+    h3 {
+      margin: 0 0 20px 0;
+    }
+
+    button {
+      margin: 0 5px;
+    }
 
   `]
 })

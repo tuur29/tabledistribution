@@ -77,7 +77,15 @@ import { SavesService } from 'app/services/saves.service';
 
     mat-drawer {
       width: 300px;
-      padding: 10px;
+    }
+
+    mat-drawer h2 {
+      padding: 10px 10px 0 10px;
+      margin-bottom: 0;
+    }
+
+    mat-drawer h2 button {
+      margin-top: -5px;
     }
 
     .cardsgrid > *, .accordion > * {

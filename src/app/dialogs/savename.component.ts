@@ -12,7 +12,8 @@ import { MessagesService } from '../messages/messages.service';
         <input matInput placeholder="Name" name="name" [(ngModel)]="name">
       </mat-form-field>
 
-      <button type="submit" mat-raised-button color="primary">Save</button>
+      <button mat-button (click)="dialogRef.close()">Cancel</button>
+      <button type="submit" mat-raised-button color="primary" class="float-right">Save</button>
     </form>
 
   `,

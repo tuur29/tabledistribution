@@ -9,24 +9,20 @@ import 'rxjs/add/operator/map';
   selector: 'app-saveslist',
   template: `
 
-    <mat-list *ngIf="saveslist">
+    <mat-nav-list *ngIf="saveslist">
       <mat-list-item *ngFor="let key of saveslist.keys()" (click)="saves.load(key)">
         
         {{ key }}
         <div class="spacer"></div>
-        <button mat-icon-button (click)="saves.delete(key)">
+        <button mat-icon-button (click)="delete(key, $event)">
           <mat-icon>delete</mat-icon>
         </button>
 
       </mat-list-item>
-    </mat-list>
+    </mat-nav-list>
 
   `,
   styles: [`
-
-    mat-list-item {
-      cursor: pointer;
-    }
 
   `]
 })
@@ -40,5 +36,10 @@ export class SavesListComponent implements OnInit {
     this.saves.getAll().then((list) => {
       this.saveslist = list;
     })
+  }
+
+  delete(name:string, event) {
+    event.stopPropagation();
+    this.saves.delete(name);
   }
 }
