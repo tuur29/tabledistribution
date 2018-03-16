@@ -6,12 +6,14 @@ import { MessagesService } from '../../messages/messages.service';
   selector: 'app-error',
   template: `
 
-    <mat-card>
-      <h1>Error</h1>
-      <p>It looks like you either don't have access to this page, or it doesn't exist.</p>
-      <p><a routerLink="/">Back to homepage</a></p>
-      <!-- <app-login [redirect]="redirecturl"></app-login> -->
-    </mat-card>
+    <div class="container">
+      <mat-card>
+        <h1>Error</h1>
+        <p>It looks like you either don't have access to this page, or it doesn't exist.</p>
+        <p><a routerLink="/">Back to homepage</a></p>
+        <!-- <app-login [redirect]="redirecturl"></app-login> -->
+      </mat-card>
+    </div>
 
   `,
   styles: [`
