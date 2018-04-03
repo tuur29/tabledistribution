@@ -6,5 +6,6 @@
  - Add clear notes button
  - Remember explanation hidden state
  - Use arrowkeys to move up/down in table
+ - Add seperate slider to combine rounds in case of # tables < # rounds
 
  
