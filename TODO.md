@@ -5,4 +5,5 @@
  - Fix panels don't remember hidden state in production
  - Add seperate slider to combine rounds in case of # tables < # rounds
  - Add way to color code fields
+ - Fix table doesn't load on first generate
  
