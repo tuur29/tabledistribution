@@ -143,11 +143,13 @@ export class HomeComponent implements OnInit {
         .map((name) => name + ' ('+this.globals.letters[i]+')')
       );
 
-    this.nameslist.updateTable(newtable);
-    this.rounds.updateTable(
-      this.getCombinations(newtable),
-      this.getCombinations(this.globals.letters.slice(0, newtable.length))
-    );
+    if (this.nameslist)
+      this.nameslist.updateTable(newtable);
+    if (this.rounds)
+      this.rounds.updateTable(
+        this.getCombinations(newtable),
+        this.getCombinations(this.globals.letters.slice(0, newtable.length))
+      );
   }
 
   save() {

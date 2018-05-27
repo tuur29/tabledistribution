@@ -43,7 +43,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
 
                 <span class="letter">{{ globals.letters[i] }}</span>
                 <mat-form-field [formArrayName]="i" *ngFor="let name of group['controls']; let j = index;" [style.opacity]="form.disabled && name.value?.length<1 ? 0 : 1">
-                  <input matInput placeholder="Name" maxlength="10" [tabindex]="j==0?j:-1" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)" (keyup.enter)="focusNext($event)">
+                  <input matInput placeholder="Name" maxlength="10" [tabindex]="j==0?j:-1" type="text" [formControlName]="j" (focus)="focusName($event)" (blur)="blurName($event)" (keyup.enter)="focusNext($event)" (keyup.ArrowUp)="focusUp($event)" (keyup.ArrowDown)="focusDown($event)">
                 </mat-form-field>
 
               </div>
@@ -166,11 +166,26 @@ export class InputTableComponent implements OnInit {
     // add new control if no empty controls
     if (event.target.value == ""
       && itemindex == this.getParent(event.target,5).children.length -1)
-      control.push(new FormControl());
-    
+      control.push(new FormControl());    
   }
 
   focusNext(event) {
+    if (event.target.value == "") return;
+    let formField = this.getParent(event.target, 4);
+    let nextFormField = formField.nextElementSibling;
+    let nextInput = this.getFormFieldInput(nextFormField);
+    nextInput.focus();
+  }
+
+  focusUp(event) {
+    let formField = this.getParent(event.target, 4);
+    let prevFormField = formField.previousElementSibling;
+    if (prevFormField.childNodes[0].childNodes.length < 1) return;
+    let prevInput = this.getFormFieldInput(prevFormField);
+    prevInput.focus();
+  }
+
+  focusDown(event) {
     if (event.target.value == "") return;
     let formField = this.getParent(event.target, 4);
     let nextFormField = formField.nextElementSibling;
