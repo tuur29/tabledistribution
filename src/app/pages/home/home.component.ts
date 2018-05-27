@@ -11,7 +11,7 @@ import { SavesService } from 'app/services/saves.service';
       <mat-drawer #drawer mode="over" position="end">
         <h2>
           Saved
-          <button mat-icon-button (click)="saves.newSave(currenttable)" class="float-right">
+          <button mat-icon-button (click)="save()" class="float-right">
             <mat-icon>save</mat-icon>
           </button>
         </h2>
@@ -24,7 +24,7 @@ import { SavesService } from 'app/services/saves.service';
         <div class="cardsgrid">
 
           <div *ngIf="globals.auth.token">
-            <app-inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
+            <app-inputtable #inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
           </div>
 
           <div *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
@@ -35,7 +35,7 @@ import { SavesService } from 'app/services/saves.service';
 
             <app-nameslist #nameslist></app-nameslist>
             &nbsp;
-            <app-notes></app-notes>
+            <app-notes #notes></app-notes>
 
           </mat-accordion>
 
@@ -114,9 +114,11 @@ export class HomeComponent implements OnInit {
 
   generated = false;
   currenttable;
+  @ViewChild('inputtable') inputtable;
   @ViewChild('rounds') rounds;
   @ViewChild('nameslist') nameslist;
   @ViewChild('drawer') drawer;
+  @ViewChild('notes') notes;
 
   constructor(
     public globals: GlobalsService,
@@ -125,6 +127,11 @@ export class HomeComponent implements OnInit {
 
   ngOnInit() {
     this.globals.drawer = this.drawer;
+
+    this.saves.onLoad().subscribe((data) => {
+      this.inputtable.loadTable(data[0]);
+      this.notes.setNotes(data[1])
+    });
   }
 
   onGenerateTable(table: any) {
@@ -141,6 +148,10 @@ export class HomeComponent implements OnInit {
       this.getCombinations(newtable),
       this.getCombinations(this.globals.letters.slice(0, newtable.length))
     );
+  }
+
+  save() {
+    this.saves.newSave(this.currenttable, this.notes.getNotes());
   }
 
   private getCombinations(arr: any[]): any[] {

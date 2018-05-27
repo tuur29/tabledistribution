@@ -33,8 +33,8 @@ export class SavesListComponent implements OnInit {
   constructor(public saves: SavesService) {}
 
   ngOnInit() {
-    this.saves.getAll().then((list) => {
-      this.saveslist = list;
+    this.saves.getAll().then((saves) => {
+      this.saveslist = saves[0];
     })
   }
 

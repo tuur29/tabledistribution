@@ -42,7 +42,7 @@ import { LocalStorage } from 'ngx-store';
 export class NotesComponent implements OnInit {
 
   @LocalStorage("hideNotes") hide = true;
-  @LocalStorage("notes") notes = "";
+  notes = "";
 
   constructor() {}
 
@@ -51,6 +51,14 @@ export class NotesComponent implements OnInit {
   clearNotes(event) {
     event.stopPropagation();
     this.notes = "";
+  }
+
+  getNotes() : string {
+    return this.notes;
+  }
+
+  setNotes(notes: string) {
+    this.notes = notes;
   }
 
 }

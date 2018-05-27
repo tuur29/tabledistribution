@@ -8,6 +8,7 @@ import { DialogsService } from '../dialogs/dialogs.service';
 export class SavesService {
 
   list: Map<string, any> = new Map();
+  notes: Map<string, string> = new Map();
   ready;
   private loadsubject = new Subject<any>();
 
@@ -21,17 +22,20 @@ export class SavesService {
         if (key.indexOf("ngx_save_") == 0) {
           let save = this.localStorageService.get(key.replace("ngx_",""));
           this.list.set(key.replace("ngx_save_",""), save);
+        } else if (key.indexOf("ngx_savenote_") == 0) {
+          let save = this.localStorageService.get(key.replace("ngx_",""));
+          this.notes.set(key.replace("ngx_savenote_",""), save);
         }
       });
-      resolve(this.list);
+      resolve([this.list, this.notes]);
     });
 
   }
 
-  newSave(data: any) {
+  newSave(data: any, notes: string) {
     this.dialogs.savename().subscribe((name) => {
       if (name)
-        this.save(name, data);
+        this.save(name, data, notes);
     });
   }
 
@@ -40,7 +44,7 @@ export class SavesService {
   }
 
   load(name: string) {
-    this.loadsubject.next(this.list.get(name));
+    this.loadsubject.next([this.list.get(name), this.notes.get(name)]);
   }
 
   onLoad(): Observable<any> {
@@ -52,13 +56,15 @@ export class SavesService {
       if (result) {
         this.list.delete(name);
         this.localStorageService.remove('save_'+name);
+        this.localStorageService.remove('savenote_'+name);
       }
     });
   }
 
-  private save(name: string, data: any) {
+  private save(name: string, data: any, notes: string) {
     this.list.set(name, data);
     this.localStorageService.set("save_"+name, data);
+    this.localStorageService.set("savenote_"+name, notes);
   }
 
 }
