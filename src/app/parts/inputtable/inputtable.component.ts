@@ -33,8 +33,11 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
         <ng-container *ngIf="roundsCount">
 
           <button [style.float]="'right'" (click)="toggleDisable()" mat-raised-button [color]="form.disabled ? 'primary' : 'default'">
-              <mat-icon>lock_outline</mat-icon> Lock
-            </button>
+          <mat-icon>lock_outline</mat-icon> Lock
+          </button>
+          <button [style.float]="'right'" (click)="fix()" mat-raised-button [color]="form.disabled ? 'primary' : 'default'">
+            <mat-icon>refresh</mat-icon> Fix
+          </button>
           <h1>Distribute Participants</h1>
           <form [formGroup]="form">
             <div class="table" [style.width]="(195*roundsCount) + 'px'">
@@ -198,6 +201,32 @@ export class InputTableComponent implements OnInit {
       this.form.enable();
     else
       this.form.disable();
+  }
+
+  fix() {
+
+    let groups = this.form.controls.groups;
+    for (let lettergroup in groups['controls']) {
+      let names = <FormArray> groups.get(lettergroup);
+      let list = names['controls'];
+      
+      for (let i = 0; i < list.length; i++) {
+        let control = names.get(i.toString());
+        
+        // if controls in middle have no value
+        if (!control.value && i < list.length-1) {
+          names.removeAt(i);
+        }
+
+        // if last control has a value
+        if (i == list.length - 1 && control.value) {
+          names.push(this.fb.control(""));
+          break;
+        }
+        
+      } 
+      
+    }
   }
 
   private getParent(element, index: number) {
