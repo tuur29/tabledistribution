@@ -14,6 +14,9 @@ import { LocalStorage } from 'ngx-store';
       <mat-expansion-panel-header>
         <mat-panel-title>
           <h1>Notes</h1>
+          <button mat-icon-button (click)="clearNotes($event)">
+            <mat-icon>delete</mat-icon>
+          </button>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
@@ -30,6 +33,10 @@ import { LocalStorage } from 'ngx-store';
       width: 100%;
     }
 
+    .mat-icon-button {
+      margin-top: -3px;
+    }
+
   `]
 })
 export class NotesComponent implements OnInit {
@@ -40,5 +47,10 @@ export class NotesComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {}
+
+  clearNotes(event) {
+    event.stopPropagation();
+    this.notes = "";
+  }
 
 }
