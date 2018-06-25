@@ -123,6 +123,7 @@ export class InputTableComponent implements OnInit {
         this.localStorageService.set("table", newtable);
       this.roundsCount = rounds;
       this.makeForm();
+      this.loadTable(newtable);
     }
 
   }
