@@ -1,7 +1,7 @@
 
 # Angular build
 rm -rf dist
-ng build -prod --base-href "./"
+ng build -prod --aot=false --base-href "./"
 
 # rewrite base element so app works locally
 # <base href="./">
