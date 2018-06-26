@@ -32,7 +32,7 @@ import { FormControl } from '@angular/forms';
 
       <ul *ngFor="let tableInRound of customround">
         <ng-container *ngFor="let person of tableInRound; let i = index">
-          <li [style.display]="(person.name ? '' : 'none')">
+          <li *ngIf="person?.name">
             <small>{{i+1}}:</small> <span [style.color]="person.data?.color">{{person.name}} ({{person.data?.letter}})</span>
           </li>
         </ng-container>
@@ -108,6 +108,8 @@ export class CustomRoundsComponent implements OnInit {
 
       this.customround.push(round);
     });
+
+    console.log(this.customround);
   }
 
   updateTable(table) {

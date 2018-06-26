@@ -24,7 +24,7 @@ import { LocalStorage } from 'ngx-store';
         <span>{{ letters[i].join(', ') }}</span>
         <ul *ngFor="let tables of perm">
           <ng-container *ngFor="let person of tables; let j = index">
-            <li [style.display]="(person.name?'':'none')">
+            <li *ngIf="person?.name">
               <small>{{j+1}}:</small> <span [style.color]="person.data.color">{{person.name}} ({{person.data.letter}})</span>
             </li>
           </ng-container>

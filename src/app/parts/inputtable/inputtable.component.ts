@@ -67,7 +67,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
                         (keyup.ArrowDown)="focusDown($event)">
                     </mat-form-field>
 
-                    <div formGroupName="data" [style.opacity]="(person.value?.name.length<1 ? 0 : 1)">
+                    <div formGroupName="data" *ngIf="(person.value?.name.length<1 ? 0 : 1)">
                       <input type="color" formControlName="color" tabindex="-1">
                     </div>
 
