@@ -67,7 +67,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
                         (keyup.ArrowDown)="focusDown($event)">
                     </mat-form-field>
 
-                    <div formGroupName="data" *ngIf="(person.value?.name.length<1 ? 0 : 1)">
+                    <div formGroupName="data" *ngIf="person.value?.name">
                       <input type="color" formControlName="color" tabindex="-1">
                     </div>
 
@@ -211,7 +211,7 @@ export class InputTableComponent implements OnInit {
     // add new control if no empty controls
     if (event.target.value == ""
       && itemindex == this.getParent(event.target,7).children.length -1)
-      control.push(this.fb.group({name: "", data: {color: ""}}));
+      control.push( this.fb.group({name: "", data: this.fb.group({color: ""})}) );
   }
 
   focusNext(event) {
