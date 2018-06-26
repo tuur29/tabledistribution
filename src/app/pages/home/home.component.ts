@@ -132,7 +132,7 @@ export class HomeComponent implements OnInit {
 
     this.saves.onLoad().subscribe((data) => {
       this.inputtable.loadTable(data[0]);
-      this.notes.setNotes(data[1])
+      this.notes.setNotes(data[1]);
     });
   }
 

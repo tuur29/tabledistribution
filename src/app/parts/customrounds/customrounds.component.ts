@@ -75,6 +75,7 @@ export class CustomRoundsComponent implements OnInit {
 
   @LocalStorage("hideCustomRounds") hide = true;
   customcontrol: FormControl = new FormControl();
+  @LocalStorage() customcontrolvalue = null;
 
   table: any[];
   customround: any[] = [];
@@ -82,8 +83,10 @@ export class CustomRoundsComponent implements OnInit {
   constructor(public g: GlobalsService) {}
 
   ngOnInit() {
+    if (this.customcontrolvalue) this.customcontrol.setValue(this.customcontrolvalue);
     this.customcontrol.valueChanges.subscribe(input => {
       this.updateView();
+      this.customcontrolvalue = input;
     });
   }
 
@@ -108,6 +111,11 @@ export class CustomRoundsComponent implements OnInit {
 
       this.customround.push(round);
     });
+  }
+
+  clearCustomRound() {
+    this.customcontrolvalue = null;
+    this.customcontrol.reset();
   }
 
   updateTable(table) {
