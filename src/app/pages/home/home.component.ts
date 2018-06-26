@@ -29,6 +29,7 @@ import { SavesService } from 'app/services/saves.service';
 
           <div *ngIf="globals.auth.token" [style.display]="(generated ? 'block' : 'none')">
             <app-rounds #rounds></app-rounds>
+            <app-customrounds #customrounds></app-customrounds>
           </div>
 
           <mat-accordion *ngIf="globals.auth.token" class="small" [style.display]="(generated ? 'block' : 'none')">
@@ -119,6 +120,7 @@ export class HomeComponent implements OnInit {
   @ViewChild('nameslist') nameslist;
   @ViewChild('drawer') drawer;
   @ViewChild('notes') notes;
+  @ViewChild('customrounds') customrounds;
 
   constructor(
     public globals: GlobalsService,
@@ -149,6 +151,8 @@ export class HomeComponent implements OnInit {
 
     if (this.nameslist)
       this.nameslist.updateTable(newtable);
+    if (this.customrounds)
+      this.customrounds.updateTable(newtable);
     if (this.rounds)
       this.rounds.updateTable(
         this.getCombinations(newtable),

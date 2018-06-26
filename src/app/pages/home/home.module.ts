@@ -10,6 +10,7 @@ import { RoundsModule } from '../../parts/rounds/rounds.module';
 import { NamesListModule } from '../../parts/nameslist/nameslist.module';
 import { NotesModule } from '../../parts/notes/notes.module';
 import { SavesListModule } from '../../parts/saveslist/saveslist.module';
+import { CustomRoundsModule } from '../../parts/customrounds/customrounds.module';
 
 import { HomeComponent } from './home.component';
 
@@ -26,7 +27,8 @@ import { HomeComponent } from './home.component';
     RoundsModule,
     NamesListModule,
     NotesModule,
-    SavesListModule
+    SavesListModule,
+    CustomRoundsModule
   ],
   declarations: [
     HomeComponent

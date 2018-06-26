@@ -34,8 +34,8 @@ import 'rxjs/add/operator/map';
           <input matInput placeholder="Search names" aria-label="Search names" [formControl]="namesCtrl">
 
           <button *ngIf="namesCtrl.value" matSuffix mat-icon-button aria-label="Reset" (click)="namesCtrl.reset()">
-          <mat-icon>close</mat-icon>
-        </button>
+           <mat-icon>close</mat-icon>
+          </button>
 
         </mat-form-field>
       </form>
