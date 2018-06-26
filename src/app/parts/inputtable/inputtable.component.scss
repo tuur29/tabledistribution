@@ -67,6 +67,19 @@ mat-form-field {
   padding: 0.2em 0;
 }
 
+input[type=color] {
+  position: relative;
+  z-index: 2;
+  margin-top: -36px;
+  padding: 0;
+  float: right;
+  border: none;
+  background: none;
+  height: 20px;
+  width: 16px;
+  cursor: pointer;
+}
+
 p {
   text-align: center;
 }

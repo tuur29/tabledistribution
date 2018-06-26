@@ -41,7 +41,9 @@ import 'rxjs/add/operator/map';
       </form>
 
       <mat-list>
-        <mat-list-item *ngFor="let person of filteredList | async">{{person.name}} ({{person.data.letter}})</mat-list-item>
+        <mat-list-item *ngFor="let person of filteredList | async">
+          <span [style.color]="person.data.color">{{person.name}} ({{person.data.letter}})</span>
+        </mat-list-item>
       </mat-list>
 
     </mat-expansion-panel>

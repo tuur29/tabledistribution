@@ -33,11 +33,12 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
         <ng-container *ngIf="roundsCount">
 
           <button [style.float]="'right'" (click)="toggleDisable()" mat-raised-button [color]="(form.disabled ? 'primary' : 'default')">
-          <mat-icon>lock_outline</mat-icon> Lock
+            <mat-icon>lock_outline</mat-icon> Lock
           </button>
           <button [style.float]="'right'" (click)="fix()" mat-raised-button color="default">
             <mat-icon>refresh</mat-icon> Fix
           </button>
+
           <h1>Distribute Participants</h1>
           <form [formGroup]="form">
             <div class="table" [style.width]="(195*roundsCount) + 'px'">
@@ -48,27 +49,33 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
                 class="group {{ i%roundsCount==0 ? 'first' : '' }} {{ i%roundsCount==roundsCount-1 ? 'last' : '' }}">
 
                 <span class="letter">{{ globals.letters[i] }}</span>
-                <mat-form-field 
-                  [formArrayName]="i"
+
+                <div [formArrayName]="i"
                   *ngFor="let person of group['controls']; let j = index;"
                   [style.opacity]="(form.disabled && person.value?.name.length<1 ? 0 : 1)">
 
                   <div [formGroupName]="j">
 
-                    <input matInput type="text" placeholder="Name" maxlength="15"
-                      formControlName="name"
-                      [tabindex]="(j==0?j:-1)"
-                      (focus)="focusName($event)"
-                      (blur)="blurName($event)"
-                      (keyup.enter)="focusNext($event)"
-                      (keyup.ArrowUp)="focusUp($event)"
-                      (keyup.ArrowDown)="focusDown($event)">
+                    <mat-form-field>
+                      <input matInput type="text" placeholder="Name" maxlength="15"
+                        formControlName="name"
+                        [tabindex]="(j==0?j:-1)"
+                        (focus)="focusName($event)"
+                        (blur)="blurName($event)"
+                        (keyup.enter)="focusNext($event)"
+                        (keyup.ArrowUp)="focusUp($event)"
+                        (keyup.ArrowDown)="focusDown($event)">
+                    </mat-form-field>
+
+                    <div formGroupName="data" [style.opacity]="(person.value?.name.length<1 ? 0 : 1)">
+                      <input type="color" formControlName="color" tabindex="-1">
+                    </div>
+
                   </div>
-                  </mat-form-field>
-
+                </div>
               </div>
-
             </div>
+
           </form>
 
           <p>Participants in the same column will never sit at the same table.</p>
@@ -127,7 +134,7 @@ export class InputTableComponent implements OnInit {
       let enlargement = rounds*rounds - this.roundsCount*this.roundsCount;
       const control = <FormArray> this.form.controls['groups'];
       for (let i=0; i<enlargement; i++)
-        control.push( this.fb.array([this.fb.group({name: "", data: {}}) ]) );
+        control.push( this.fb.array([this.fb.group({name: "", data: this.fb.group({color: ""})})]) );
 
       this.roundsCount = rounds;
 
@@ -145,7 +152,7 @@ export class InputTableComponent implements OnInit {
 
       const control = <FormArray> this.form.controls['groups'];
       for (let i=0; i<rounds*rounds; i++)
-        control.push( this.fb.array([this.fb.group({name: "", data: {}}) ]) );
+        control.push( this.fb.array([this.fb.group({name: "", data: this.fb.group({color: ""})})]) );
 
     }
 
@@ -164,7 +171,8 @@ export class InputTableComponent implements OnInit {
       for (let i=0; i<table.length; i++) {
         let arr = this.fb.array([]);
         for (let j=0; j<table[i].length; j++) {
-          arr.push(this.fb.group(table[i][j]));
+          let group = this.fb.group({name: table[i][j].name, data: this.fb.group({color: table[i][j].data.color})});
+          arr.push(group);
         }
         control.push(arr);
       }
@@ -178,32 +186,32 @@ export class InputTableComponent implements OnInit {
 
   blurName(event) {
 
-    let arrayindex = Array.prototype.indexOf.call(this.getParent(event.target,7).children, this.getParent(event.target,6));
+    let arrayindex = Array.prototype.indexOf.call(this.getParent(event.target,8).children, this.getParent(event.target,7));
     const control = <FormArray> this.form.controls['groups']['controls'][arrayindex];
-    let itemindex = Array.prototype.indexOf.call(this.getParent(event.target,6).children, this.getParent(event.target,5)) -1;
+    let itemindex = Array.prototype.indexOf.call(this.getParent(event.target,7).children, this.getParent(event.target,6)) -1;
 
     // remove control if empty & there are other empty controls
     if (event.target.value == ""
-      && this.getParent(event.target,6).nextElementSibling != undefined )
+      && this.getParent(event.target,7).nextElementSibling != undefined )
       control.removeAt(itemindex);
       
   }
 
   focusName(event) {
 
-    let arrayindex = Array.prototype.indexOf.call(this.getParent(event.target,7).children, this.getParent(event.target,6));
+    let arrayindex = Array.prototype.indexOf.call(this.getParent(event.target,8).children, this.getParent(event.target,7));
     const control = <FormArray> this.form.controls['groups']['controls'][arrayindex];
-    let itemindex = Array.prototype.indexOf.call(this.getParent(event.target,6).children, this.getParent(event.target,5));
-    let previousSibling = this.getParent(event.target,6).children[itemindex-1];
+    let itemindex = Array.prototype.indexOf.call(this.getParent(event.target,7).children, this.getParent(event.target,6));
+    let previousSibling = this.getParent(event.target,7).children[itemindex-1];
     
     if ( itemindex > 1 && (previousSibling.querySelectorAll('input')[0].value == ""
-      && itemindex == this.getParent(event.target,6).children.length -1) )
+      && itemindex == this.getParent(event.target,7).children.length -1) )
       return;
 
     // add new control if no empty controls
     if (event.target.value == ""
-      && itemindex == this.getParent(event.target,6).children.length -1)
-      control.push(this.fb.group({name: "", data: {}}));
+      && itemindex == this.getParent(event.target,7).children.length -1)
+      control.push(this.fb.group({name: "", data: {color: ""}}));
   }
 
   focusNext(event) {
@@ -211,7 +219,7 @@ export class InputTableComponent implements OnInit {
   }
 
   focusUp(event) {
-    let formField = this.getParent(event.target, 5);
+    let formField = this.getParent(event.target, 6);
     let prevFormField = formField.previousElementSibling;
     if (prevFormField.childNodes[0].childNodes.length < 1) return;
     let prevInput = this.getFormFieldInput(prevFormField);
@@ -220,7 +228,7 @@ export class InputTableComponent implements OnInit {
 
   focusDown(event) {
     if (event.target.value == "") return;
-    let formField = this.getParent(event.target, 5);
+    let formField = this.getParent(event.target, 6);
     let nextFormField = formField.nextElementSibling;
     let nextInput = this.getFormFieldInput(nextFormField);
     nextInput.focus();
@@ -250,7 +258,7 @@ export class InputTableComponent implements OnInit {
 
         // if last person has a value
         if (i == list.length - 1 && person.value.name) {
-          persons.push(this.fb.group({name: "", data: {}}));
+          persons.push(this.fb.group({name: "", data: this.fb.group({color: ""})}));
         }
         
       } 
@@ -267,6 +275,7 @@ export class InputTableComponent implements OnInit {
   }
 
   private getFormFieldInput(element) {
+    console.log(element.childNodes[0].childNodes[0].childNodes[1].childNodes[1].childNodes[1]);
     return element.childNodes[0].childNodes[0].childNodes[1].childNodes[1].childNodes[1];
   }
 
