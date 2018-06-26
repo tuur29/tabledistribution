@@ -108,8 +108,6 @@ export class CustomRoundsComponent implements OnInit {
 
       this.customround.push(round);
     });
-
-    console.log(this.customround);
   }
 
   updateTable(table) {

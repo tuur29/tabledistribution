@@ -275,7 +275,6 @@ export class InputTableComponent implements OnInit {
   }
 
   private getFormFieldInput(element) {
-    console.log(element.childNodes[0].childNodes[0].childNodes[1].childNodes[1].childNodes[1]);
     return element.childNodes[0].childNodes[0].childNodes[1].childNodes[1].childNodes[1];
   }
 
