@@ -27,11 +27,11 @@ import { SavesService } from 'app/services/saves.service';
             <app-inputtable #inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
           </div>
 
-          <div *ngIf="globals.auth.token" [style.display]="generated ? 'block' : 'none'">
+          <div *ngIf="globals.auth.token" [style.display]="(generated ? 'block' : 'none')">
             <app-rounds #rounds></app-rounds>
           </div>
 
-          <mat-accordion *ngIf="globals.auth.token" class="small" [style.display]="generated ? 'block' : 'none'">
+          <mat-accordion *ngIf="globals.auth.token" class="small" [style.display]="(generated ? 'block' : 'none')">
 
             <app-nameslist #nameslist></app-nameslist>
             &nbsp;
@@ -137,10 +137,14 @@ export class HomeComponent implements OnInit {
   onGenerateTable(table: any) {
     this.currenttable = table;
     this.generated = true;
+    
     let newtable = table
       .map((g, i) => g
-        .filter((name) => name!=null && name!='')
-        .map((name) => name + ' ('+this.globals.letters[i]+')')
+        .filter((person) => person!=null && person.name!='')
+        .map((person) => {
+          person.data.letter = this.globals.letters[i];
+          return person;
+        })
       );
 
     if (this.nameslist)

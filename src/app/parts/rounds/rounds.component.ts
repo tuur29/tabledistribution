@@ -23,9 +23,9 @@ import { LocalStorage } from 'ngx-store';
         <h2>Round {{i+1}}</h2>
         <span>{{ letters[i].join(', ') }}</span>
         <ul *ngFor="let tables of perm">
-          <ng-container *ngFor="let name of tables; let j = index">
-            <li [style.display]="name?'':'none'">
-              <small>{{j+1}}:</small> {{name}}
+          <ng-container *ngFor="let person of tables; let j = index">
+            <li [style.display]="(person.name?'':'none')">
+              <small>{{j+1}}:</small> {{person.name}} ({{person.data.letter}})
             </li>
           </ng-container>
         </ul>

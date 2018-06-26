@@ -41,7 +41,7 @@ import 'rxjs/add/operator/map';
       </form>
 
       <mat-list>
-        <mat-list-item *ngFor="let name of filteredList | async">{{name}}</mat-list-item>
+        <mat-list-item *ngFor="let person of filteredList | async">{{person.name}} ({{person.data.letter}})</mat-list-item>
       </mat-list>
 
     </mat-expansion-panel>
@@ -89,12 +89,13 @@ export class NamesListComponent implements OnInit {
   ngOnInit() {
     this.filteredList = this.namesCtrl.valueChanges
       .startWith(null)
-      .map(name => name ? this.filter(name) : this.list.slice());
+      .map(query => query ? this.filter(query) : this.list.slice());
   }
 
   filter(query: string) {
-    return this.list.filter(name =>
-      this.normalize(name).indexOf(this.normalize(query)) > -1
+    return this.list.filter(person =>
+      this.normalize(person.name).indexOf(this.normalize(query)) > -1 ||
+      this.normalize(person.data.letter).indexOf(this.normalize(query)) > -1
     );
   }
 
