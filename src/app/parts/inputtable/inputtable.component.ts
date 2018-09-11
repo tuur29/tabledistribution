@@ -68,7 +68,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
                     </mat-form-field>
 
                     <div formGroupName="data" *ngIf="person.value?.name">
-                      <input type="color" formControlName="color" tabindex="-1">
+                      <input type="color" formControlName="color" tabindex="-1" (change)="pickColor(person)">
                     </div>
 
                   </div>
@@ -95,6 +95,8 @@ export class InputTableComponent implements OnInit {
   form: FormGroup;
   roundsCount = 0;
   sub;
+
+  coloredNames: Map<string,string> = new Map<string,string>();
 
   constructor(
     public globals: GlobalsService,
@@ -173,6 +175,9 @@ export class InputTableComponent implements OnInit {
         for (let j=0; j<table[i].length; j++) {
           let group = this.fb.group({name: table[i][j].name, data: this.fb.group({color: table[i][j].data.color})});
           arr.push(group);
+          if (table[i][j].data.color) {
+            this.coloredNames.set(table[i][j].name,table[i][j].data.color);
+          }
         }
         control.push(arr);
       }
@@ -189,6 +194,11 @@ export class InputTableComponent implements OnInit {
     let arrayindex = Array.prototype.indexOf.call(this.getParent(event.target,8).children, this.getParent(event.target,7));
     const control = <FormArray> this.form.controls['groups']['controls'][arrayindex];
     let itemindex = Array.prototype.indexOf.call(this.getParent(event.target,7).children, this.getParent(event.target,6)) -1;
+
+    // read color if names match older colored name
+    if (this.coloredNames.get(event.target.value)) {
+      control.at(itemindex).get("data.color").setValue(this.coloredNames.get(event.target.value));
+    }
 
     // remove control if empty & there are other empty controls
     if (event.target.value == ""
@@ -264,6 +274,23 @@ export class InputTableComponent implements OnInit {
         
       } 
       
+    }
+  }
+
+  pickColor(person: FormGroup) {
+    if (person.value.data.color == "#000000") {
+      this.coloredNames.delete(person.value.name);
+    } else {
+      this.coloredNames.set(person.value.name, person.value.data.color);
+    }
+
+    // mirror color to other formgroups with same name
+    for (let group of (<FormArray> this.form.get("groups")).controls )  {
+      for (let p of (<FormArray> group).controls )  {
+        if (p.value.name == person.value.name && p != person) {
+          p.get("data.color").setValue(person.value.data.color);
+        }
+      }
     }
   }
 
