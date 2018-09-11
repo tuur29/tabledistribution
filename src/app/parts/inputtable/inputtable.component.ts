@@ -78,7 +78,7 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
 
           </form>
 
-          <p>Participants in the same column will never sit at the same table.</p>
+          <p>Participants with letters in the same column will never sit at the same table.</p>
         </ng-container>
 
       </mat-expansion-panel>
