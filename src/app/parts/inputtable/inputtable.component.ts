@@ -221,8 +221,8 @@ export class InputTableComponent implements OnInit {
   focusUp(event) {
     let formField = this.getParent(event.target, 6);
     let prevFormField = formField.previousElementSibling;
-    if (prevFormField.childNodes[0].childNodes.length < 1) return;
     let prevInput = this.getFormFieldInput(prevFormField);
+    if (!prevInput) return;
     prevInput.focus();
   }
 
@@ -231,6 +231,7 @@ export class InputTableComponent implements OnInit {
     let formField = this.getParent(event.target, 6);
     let nextFormField = formField.nextElementSibling;
     let nextInput = this.getFormFieldInput(nextFormField);
+    if (!nextInput) return;
     nextInput.focus();
   }
 
@@ -275,7 +276,7 @@ export class InputTableComponent implements OnInit {
   }
 
   private getFormFieldInput(element) {
-    return element.childNodes[0].childNodes[0].childNodes[1].childNodes[1].childNodes[1];
+    return element.querySelector("input[type=text]");
   }
 
 }
