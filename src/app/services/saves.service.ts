@@ -34,8 +34,16 @@ export class SavesService {
 
   newSave(data: any, notes: string) {
     this.dialogs.savename().subscribe((name) => {
-      if (name)
-        this.save(name, data, notes);
+      if (name) {
+        if (this.list.get(name)) {
+          this.dialogs.confirm("This will overwrite another save, continue?").subscribe(resp => {
+            if (resp) 
+              this.save(name, data, notes);
+          });
+        } else {
+          this.save(name, data, notes);
+        }
+      }
     });
   }
 

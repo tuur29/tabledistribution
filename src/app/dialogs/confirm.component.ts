@@ -7,7 +7,7 @@ import { MessagesService } from '../messages/messages.service';
   selector: 'app-savename',
   template: `
     
-    <h3>Are you sure?</h3>
+    <h3>{{text}}</h3>
     <button mat-button (click)="dialogRef.close(false)">No</button>
     <button mat-raised-button color="primary" (click)="dialogRef.close(true)" class="float-right">Yes</button>
 
@@ -25,6 +25,8 @@ import { MessagesService } from '../messages/messages.service';
   `]
 })
 export class ConfirmDialog implements OnInit {
+
+  public text: string = "Are you sure?";
 
   constructor(
     public globals: GlobalsService,

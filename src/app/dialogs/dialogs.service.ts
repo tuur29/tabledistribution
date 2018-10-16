@@ -20,10 +20,12 @@ export class DialogsService {
     return dialogRef.afterClosed();
   }
 
-  public confirm(oldname?: string): Observable<string> {
+  public confirm(text?: string): Observable<string> {
 
     let dialogRef: MatDialogRef<ConfirmDialog>;
     dialogRef = this.dialog.open(ConfirmDialog);
+    if (text)
+      dialogRef.componentInstance.text = text;
     return dialogRef.afterClosed();
   }
 
