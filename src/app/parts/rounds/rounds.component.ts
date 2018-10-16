@@ -82,8 +82,7 @@ export class RoundsComponent implements OnInit {
 
   updateTable(permutations: any[], letters: any[]) {
     if (!permutations || !letters) return;
-
-    this.letters = letters.map( (g) => g.map((l)=> l.join('')) );
+    this.letters = letters.map( (g) => g.map((l)=> l.sort().join('')) );
     let flattend = permutations.map((round) => {
       return round.map((table) => {
         return table.reduce((prev, curr) => {
