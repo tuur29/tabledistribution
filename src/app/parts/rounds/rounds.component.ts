@@ -1,5 +1,6 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
+import { Component, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
 import { LocalStorage } from 'ngx-store';
+import { MatSlider } from '@angular/material';
 
 @Component({
   selector: 'app-rounds',
@@ -18,18 +19,25 @@ import { LocalStorage } from 'ngx-store';
         </mat-panel-title>
       </mat-expansion-panel-header>
 
-      <div *ngFor="let perm of permutations; let i = index">
+      <div class="hideform">
+        <span>Show number of rounds: </span>
+        <mat-slider #roundsSlider thumbLabel color="primary" min="2" [max]="permutations?.length || 5" [value]="permutations?.length || 5" tickInterval="1"></mat-slider>
+      </div>
 
-        <h2>Round {{i+1}}</h2>
-        <span>{{ letters[i].join(', ') }}</span>
-        <ul *ngFor="let tables of perm">
-          <ng-container *ngFor="let person of tables; let j = index">
-            <li *ngIf="person?.name">
-              <small>{{j+1}}:</small> <span [style.color]="person.data.color">{{person.name}} ({{person.data.letter}})</span>
-            </li>
-          </ng-container>
-        </ul>
+      <div *ngFor="let perm of permutations; let i = index" class="round">
+        <ng-container *ngIf="i < shownRoundsCount">
 
+          <h2>Round {{i+1}}</h2>
+          <span>{{ letters[i].join(', ') }}</span>
+          <ul *ngFor="let tables of perm">
+            <ng-container *ngFor="let person of tables; let j = index">
+              <li *ngIf="person?.name">
+                <small>{{j+1}}:</small> <span [style.color]="person.data.color">{{person.name}} ({{person.data.letter}})</span>
+              </li>
+            </ng-container>
+          </ul>
+
+        </ng-container>
       </div>
 
     </mat-expansion-panel>
@@ -37,13 +45,10 @@ import { LocalStorage } from 'ngx-store';
   `,
   styles: [`
 
-    div {
+    .round {
       display: inline-block;
       vertical-align: top;
       margin: 10px 10px;
-    }
-
-    div:not(:last-child) {
       padding-right: 20px;
       border-right: 1px solid black;
     }
@@ -63,8 +68,17 @@ import { LocalStorage } from 'ngx-store';
       border-bottom: 1px solid black;
     }
 
+    .hideform {
+      display: block;
+      clear: both;
+    }
+
     small {
       opacity: 0.5;
+    }
+
+    ::ng-deep .hideform .mat-slider-thumb-label {
+      margin-top: 50px;
     }
 
   `]
@@ -72,13 +86,18 @@ import { LocalStorage } from 'ngx-store';
 export class RoundsComponent implements OnInit {
 
   @LocalStorage("hideRounds") hide = false;
+  @ViewChild("roundsSlider") roundsSlider: MatSlider
 
   permutations: any[];
   letters: any[];
   minwidth: number;
+  shownRoundsCount: number = 5;
 
   constructor() {}
-  ngOnInit() {}
+
+  ngOnInit() {
+    this.roundsSlider.change.subscribe(v => this.shownRoundsCount = v.value);
+  }
 
   updateTable(permutations: any[], letters: any[]) {
     if (!permutations || !letters) return;
