@@ -123,10 +123,15 @@ export class InputTableComponent implements OnInit {
     });
   }
 
-  onGenerate(rounds: any) {
+  onGenerate(rounds: number) {
 
     if (rounds > this.roundsCount && this.roundsCount > 0) {
       // enlarge table
+
+      if (this.roundsCount > 0) {
+        let c = confirm("Are you sure? This will change some peoples letters (but not their column or row).");
+        if (!c) return;
+      }
 
       if (this.sub) this.sub.unsubscribe();
       
@@ -144,7 +149,60 @@ export class InputTableComponent implements OnInit {
 
       this.loadTable(newtable);
 
-    
+
+    } else if (rounds < this.roundsCount && this.roundsCount > 0) {
+      // reduce table
+
+      if (this.roundsCount > 0) {
+        let c = confirm("Are you sure? This will change some peoples letters (but not their column or row).");
+        if (!c) return;
+      }
+
+      if (this.sub) this.sub.unsubscribe();
+      
+      let previousTable = this.form.value.groups;
+      let previousRoundsCount = this.roundsCount;
+      
+      // split a simple array with rounds into a 2d array
+      let matrix = [];
+      for (let i=0;i<previousRoundsCount;i++)
+        matrix.push( previousTable.slice(i*previousRoundsCount,i*previousRoundsCount+previousRoundsCount) )
+
+      // fill a new smaller matrix
+      let newmatrix = new Array(rounds).fill(null).map(()=> new Array(rounds).fill(null));
+      for (let i=0;i<matrix.length;i++) {
+        for (let j=0;j<matrix[i].length;j++) {
+          if (i < rounds && j < rounds) {
+            // push all items that stay the same place
+            newmatrix[i][j] = matrix[i][j];
+          } else if (j >= rounds && i < rounds) {
+            // push items right of new matrix
+            newmatrix[i][j%rounds] = newmatrix[i][j%rounds].concat(matrix[i][j]);
+          } else if (i>=rounds) {
+            // push items under new matrix
+            if (j < rounds) {
+              // push items directly underneath new matrix
+              newmatrix[i%rounds][j] = newmatrix[i%rounds][j].concat(matrix[i][j]);
+            } else if (j>=rounds) {
+              // push items to right of and below new matrix
+              newmatrix[i%rounds][j%rounds] = newmatrix[i%rounds][j%rounds].concat(matrix[i][j]);
+            }
+          }
+        }
+      }
+
+      // flatten this matrix into a simple array
+      let newtable = newmatrix.reduce((acc, val) => acc.concat(val), []);
+
+      // remove middle empty names
+      for (let i=0; i<newtable.length; i++) {
+        for (let j=0; j<newtable[i].length-1; j++) {
+          if (newtable[i][j].name === "") 
+            newtable[i].splice(j,1);
+        }
+      }
+
+      this.loadTable(newtable);
 
 
     } else {
