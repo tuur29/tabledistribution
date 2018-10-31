@@ -126,23 +126,30 @@ export class InputTableComponent implements OnInit {
   onGenerate(rounds: any) {
 
     if (rounds > this.roundsCount && this.roundsCount > 0) {
-
       // enlarge table
-      let c = confirm("Are you sure? This will change some participants' letter.");
-      if (!c) return;
 
       if (this.sub) this.sub.unsubscribe();
+      
+      let enlargement = rounds - this.roundsCount;
+      let previousTable = this.form.value.groups;
+      let previousRoundsCount = this.roundsCount;
+      
+      let newtable = [];
+      for (let i=0; i < previousTable.length; i++) {
+        newtable.push(previousTable[i]);
+        if (i%previousRoundsCount == previousRoundsCount-1)
+          for (let j=0; j<enlargement;j++) newtable.push([{name: "", data: {color: ""}}]);
+      }
+      for (let j=0; j<rounds*enlargement;j++) newtable.push([{name: "", data: {color: ""}}]);
 
-      let enlargement = rounds*rounds - this.roundsCount*this.roundsCount;
-      const control = <FormArray> this.form.controls['groups'];
-      for (let i=0; i<enlargement; i++)
-        control.push( this.fb.array([this.fb.group({name: "", data: this.fb.group({color: ""})})]) );
+      this.loadTable(newtable);
 
-      this.roundsCount = rounds;
+    
+
 
     } else {
-      
-      // regen & or decrease table
+      // new table
+
       if (this.roundsCount > 0) {
         let c = confirm("Are you sure? This will remove all data.");
         if (!c) return;
