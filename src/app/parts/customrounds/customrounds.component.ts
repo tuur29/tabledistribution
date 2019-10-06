@@ -12,7 +12,6 @@ import { FormControl } from '@angular/forms';
       [expanded]="!hide"
       (opened)="hide=false"
       (closed)="hide=true"
-      [style.minWidth]="minwidth +'px'"
       >
 
       <mat-expansion-panel-header>
