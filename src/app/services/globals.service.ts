@@ -7,26 +7,47 @@ import { MessagesService } from '../messages/messages.service';
 
 import { environment } from 'environments/environment';
 
+// TODO: selector for possible symbols: letters, emojis, none?
+export const none = [''];
+export const letters = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+export const smileys = ['😀','😉','😋','😎','😍','🙄','😮','😴','🙃','🤑','😭','😦','🤯','😱','🥵','🥶','😡','😠','🤬','😷','🤢','😇','🤠','🤡','🧐','🤓','👿','💀','👻','👽','🤖','💩','😺'];
+export const food = ['🍏','🍎','🍐','🍊','🍋','🍌','🍉','🍇','🍓','🍈','🍒','🍑','🍍','🥭','🥥','🥝','🍅','🍆','🥑','🥦','🥒','🥬','🌶','🌽','🥕','🥔','🍠','🥐','🍞','🥖','🥨','🥯','🧀','🥚','🍳','🥞','🥓','🥩','🍗','🍖','🌭','🍔','🍟','🍕','🥪','🥙','🌮','🌯','🥗','🥘','🥫','🍝','🍜','🍲','🍛','🍣','🍱','🥟','🍤','🍙','🍚','🍘','🍥','🥮','🥠','🍢','🍡','🍧','🍨','🍦','🥧','🍰','🎂','🍮','🍭','🍬','🍫','🍿','🧂','🍩','🍪','🌰','🥜','🍯','🥛','🍼','☕️','🍵','🥤','🍶','🍺','🍻','🥂','🍷','🥃','🍸','🍹','🍾','🥄','🍴','🍽','🥣','🥡','🥢'];
+export const nature = ['🐶','🐱','🐭','🐹','🐰','🦊','🦝','🐻','🐼','🦘','🦡','🐨','🐯','🦁','🐮','🐷','🐽','🐸','🐵','🙈','🙉','🙊','🐒','🐔','🐧','🐦','🐤','🐣','🐥','🦆','🦢','🦅','🦉','🦚','🦜','🦇','🐺','🐗','🐴','🦄','🐝','🐛','🦋','🐌','🐚','🐞','🐜','🦗','🕷','🕸','🦂','🦟','🦠','🐢','🐍','🦎','🦖','🦕','🐙','🦑','🦐','🦀','🐡','🐠','🐟','🐬','🐳','🐋','🦈','🐊','🐅','🐆','🦓','🦍','🐘','🦏','🦛','🐪','🐫','🦙','🦒','🐃','🐂','🐄','🐎','🐖','🐏','🐑','🐐','🦌','🐕','🐩','🐈','🐓','🦃','🕊','🐇','🐁','🐀','🐿','🦔','🐾','🐉','🐲','🌵','🎄','🌲','🌳','🌴','🌱','🌿','☘️','🍀','🎍','🎋','🍃','🍂','🍁','🍄','🌾','💐','🌷','🌹','🥀','🌺','🌸','🌼','🌻','🌞','🌝','🌛','🌜','🌚','🌕','🌖','🌗','🌘','🌑','🌒','🌓','🌔','🌙','🌎','🌍','🌏','💫','⭐️','🌟','✨','⚡️','☄️','💥','🔥','🌪','🌈','☀️','🌤','⛅️','🌥','☁️','🌦','🌧','⛈','🌩','🌨','❄️','☃️','⛄️','🌬','💨','💧','💦','☔️','☂️','🌊','🌫'];
+
+const generateLetters = (count: number, values: string[]) => {
+  let loop = 0;
+  let result = [];
+  while (count >= (loop + 1) * values.length) {
+    result = result.concat(values.map(letter => letter + ((loop > 0 && letter) ? loop : '')));
+    loop += 1;
+  }
+  return result;
+};
+
 @Injectable()
 export class GlobalsService {
 
-  public letters = ['A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','A’','B’','C’','D’','E’','F’','G’','H’','I’','J’','K’','L’','M’','N’','O’','P’','Q’','R’','S’','T’','U’','V’','W’','X’','Y’','Z’'];
-  
+  public letters = generateLetters(15 * 15, letters);
+
   public loading = false;
   public failed = false;
   public drawer: any = null;
 
   constructor(
     private http: Http,
-    public messagesService: MessagesService
+    public messagesService: MessagesService,
+    public localStorageService: LocalStorageService,
   ) {
     // check if current token expired
     if (this.auth.exp > Date.now())
       this.logout();
+
+    const identifier = this.localStorageService.get("groupIdentifier");
+    if (identifier) this.setGroupIdentifier(identifier);
   }
 
   // Authentication
-  private url = environment.backendurl+'/users/';
+  private url = environment.backendurl + '/users/';
   private readonly defaultAuth = {
     email: 'address@domain.tld',
     token: 'derp',
@@ -46,7 +67,7 @@ export class GlobalsService {
   }
 
   login(email: string, password: string): Observable<boolean> {
-    return this.http.post(this.url+'login', {
+    return this.http.post(this.url + 'login', {
       email: email,
       password: password
     }).map(res => res.json()).map(res => {
@@ -61,7 +82,7 @@ export class GlobalsService {
   }
 
   register(email: string, name: string, password: string): Observable<boolean> {
-    return this.http.post(this.url+'register', {
+    return this.http.post(this.url + 'register', {
       email: email,
       name: name,
       password: password
@@ -75,6 +96,18 @@ export class GlobalsService {
 
   logout() {
     this._authtoken = '';
+  }
+
+  setGroupIdentifier(type: string) {
+    let items = [];
+    if (type === 'none') items = none;
+    else if (type === 'letters') items = letters;
+    else if (type === 'smileys') items = smileys;
+    else if (type === 'food') items = food;
+    else if (type === 'nature') items = nature;
+    else items = letters;
+    this.letters = generateLetters(15 * 15, items);
+    this.localStorageService.set("groupIdentifier", type);
   }
 
   private parseJwt(token) {

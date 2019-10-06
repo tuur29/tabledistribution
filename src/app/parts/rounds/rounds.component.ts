@@ -28,11 +28,11 @@ import { MatSlider } from '@angular/material';
         <ng-container *ngIf="i < shownRoundsCount">
 
           <h2>Round {{i+1}}</h2>
-          <span>{{ letters[i].join(', ') }}</span>
+          <span *ngIf="letters[i][0]">{{ letters[i].join(', ') }}</span>
           <ul *ngFor="let tables of perm">
             <ng-container *ngFor="let person of tables; let j = index">
               <li *ngIf="person?.name">
-                <small>{{j+1}}:</small> <span [style.color]="person.data.color">{{person.name}} ({{person.data.letter}})</span>
+                <small>{{j+1}}:</small> <span [style.color]="person.data.color">{{person.name}} <span *ngIf="person.data.letter">({{person.data.letter}})</span></span>
               </li>
             </ng-container>
           </ul>
@@ -118,5 +118,6 @@ export class RoundsComponent implements OnInit {
       this.minwidth = flattend.length/2*200 + flattend.length*15;
     
     this.permutations = flattend;
+    this.shownRoundsCount = flattend.length;
   }
 }

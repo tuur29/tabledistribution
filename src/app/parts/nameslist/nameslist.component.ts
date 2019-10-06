@@ -42,7 +42,7 @@ import 'rxjs/add/operator/map';
 
       <mat-list>
         <mat-list-item *ngFor="let person of filteredList | async">
-          <span [style.color]="person.data.color">{{person.name}} ({{person.data.letter}})</span>
+          <span [style.color]="person.data.color">{{person.name}} <span *ngIf="person.data.letter">({{person.data.letter}})</span></span>
         </mat-list-item>
       </mat-list>
 

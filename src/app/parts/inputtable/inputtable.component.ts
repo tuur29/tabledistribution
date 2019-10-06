@@ -3,7 +3,6 @@ import { GlobalsService } from 'app/services/globals.service';
 import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
 import { LocalStorage, LocalStorageService } from 'ngx-store';
 
-
 @Component({
   selector: 'app-inputtable',
   template: `
@@ -22,11 +21,21 @@ import { LocalStorage, LocalStorageService } from 'ngx-store';
         <!-- Generate Form -->
         <div class="genform">
           <span>Largest number of either rounds or tables: </span>
-          <mat-slider #roundsSlider thumbLabel color="primary" min="2" max="5" value="3" tickInterval="1"></mat-slider>
+          <mat-slider #roundsSlider thumbLabel color="primary" min="2" max="15" value="3" tickInterval="1"></mat-slider>
 
           <button type="button" (click)="onGenerate(roundsSlider.value)" mat-raised-button color="primary">
             <mat-icon>refresh</mat-icon> Generate
           </button>
+
+          <mat-form-field>
+            <mat-select placeholder="Group identifier" [(value)]="groupIdentifier" (change)="updateGroupIdentifier($event)">
+              <mat-option value="letters">Letters</mat-option>
+              <mat-option value="none">None</mat-option>
+              <mat-option value="smileys">Smileys</mat-option>
+              <mat-option value="food">Food</mat-option>
+              <mat-option value="nature">Nature</mat-option>
+            </mat-select>
+          </mat-form-field>
         </div>
 
         <!-- Output table -->
@@ -95,6 +104,7 @@ export class InputTableComponent implements OnInit {
   form: FormGroup;
   roundsCount = 0;
   sub;
+  groupIdentifier;
 
   coloredNames: Map<string,string> = new Map<string,string>();
 
@@ -106,6 +116,8 @@ export class InputTableComponent implements OnInit {
 
   ngOnInit() {
     this.loadTable(this.localStorageService.get('table'));
+
+    this.groupIdentifier = this.localStorageService.get('groupIdentifier');
   }
 
   makeForm() {
@@ -121,6 +133,11 @@ export class InputTableComponent implements OnInit {
       this.localStorageService.set("table", this.form.value.groups);
       this.onGenerateTable.emit(this.form.value.groups);
     });
+  }
+
+  updateGroupIdentifier(event: any) {
+    this.globals.setGroupIdentifier(event.value);
+    this.onGenerateTable.emit(this.form.value.groups);
   }
 
   onGenerate(rounds: number) {
