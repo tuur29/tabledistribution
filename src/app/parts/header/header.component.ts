@@ -13,8 +13,9 @@ import { GlobalsService } from 'app/services/globals.service';
       </a>
 
       <span class="spacer"></span>
-      
-      <button type="button" mat-icon-button (click)="globals.drawer.toggle()">
+
+      <button type="button" mat-button (click)="globals.drawer.toggle()">
+        <span>Saved configurations</span>
         <mat-icon>star</mat-icon>
       </button>
     </mat-toolbar>

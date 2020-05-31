@@ -11,7 +11,7 @@ import { getCombinations } from './combinations';
 
       <mat-drawer #drawer mode="over" position="end">
         <h2>
-          Saved
+          Saved configurations
           <button mat-icon-button (click)="save()" class="float-right">
             <mat-icon>save</mat-icon>
           </button>
