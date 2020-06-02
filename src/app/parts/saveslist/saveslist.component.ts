@@ -1,10 +1,6 @@
 import { Component, OnInit, OnChanges, Input } from '@angular/core';
 import { SavesService } from 'app/services/saves.service';
 
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/operator/startWith';
-import 'rxjs/add/operator/map';
-
 @Component({
   selector: 'app-saveslist',
   template: `

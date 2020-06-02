@@ -1,6 +1,5 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LocalStorage } from 'ngx-store';
-
 
 @Component({
   selector: 'app-notes',

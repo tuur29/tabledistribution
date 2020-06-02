@@ -1,7 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-
-import { environment } from 'environments/environment';
 import { GlobalsService } from 'app/services/globals.service';
 
 @Component({

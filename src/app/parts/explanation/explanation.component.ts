@@ -1,5 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { GlobalsService } from 'app/services/globals.service';
+import { Component, OnInit } from '@angular/core';
 import { LocalStorage } from 'ngx-store';
 
 @Component({
@@ -13,14 +12,7 @@ import { LocalStorage } from 'ngx-store';
 
       <mat-expansion-panel-header>
         <mat-panel-title>
-
-          <ng-container *ngIf="!globals.auth.token;else loggedin">
-            <h1>Login</h1>
-          </ng-container>
-          <ng-template #loggedin>
-            <h1>Explanation</h1>
-          </ng-template>
-
+          <h1>Explanation</h1>
         </mat-panel-title>
       </mat-expansion-panel-header>
 
@@ -33,7 +25,6 @@ import { LocalStorage } from 'ngx-store';
         <li>At the start of the event you announce everyone's letter.</li>
         <li>Each round you tell everyone which letters are seated at which physical table.</li>
       </ol>
-      <!-- <app-login></app-login> -->
 
     </mat-expansion-panel>
 
@@ -59,10 +50,7 @@ export class ExplanationComponent implements OnInit {
 
   @LocalStorage("hideExplanation") hide = false;
 
-  constructor(public globals: GlobalsService) {
-  }
-
-  ngOnInit() {
+  ngOnInit(): void {
   }
 
 }

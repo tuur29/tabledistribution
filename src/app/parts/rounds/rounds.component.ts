@@ -1,4 +1,4 @@
-import { Component, OnInit, OnChanges, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { LocalStorage } from 'ngx-store';
 import { MatSlider } from '@angular/material';
 
@@ -116,7 +116,7 @@ export class RoundsComponent implements OnInit {
       this.minwidth = (flattend.length-1)*200 - flattend.length*30;
     else
       this.minwidth = flattend.length/2*200 + flattend.length*15;
-    
+
     this.permutations = flattend;
     this.shownRoundsCount = flattend.length;
   }

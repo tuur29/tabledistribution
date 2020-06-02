@@ -1,8 +1,8 @@
-import { Component, OnInit, OnChanges, Input } from '@angular/core';
-import { GlobalsService } from 'app/services/globals.service';
+import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { LocalStorage } from 'ngx-store';
 
-import { FormControl } from '@angular/forms';
+import { GlobalsService } from 'app/services/globals.service';
 
 @Component({
   selector: 'app-customrounds',

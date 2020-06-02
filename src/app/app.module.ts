@@ -6,8 +6,6 @@ import { routes, PreloadSelectedModulesList } from './app.routing';
 import { RouterModule } from '@angular/router';
 import { WebStorageModule } from 'ngx-store';
 
-import { environment } from '../environments/environment';
-
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from './material.module';
 

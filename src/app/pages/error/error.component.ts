@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MessagesService } from '../../messages/messages.service';
 
 @Component({
   selector: 'app-error',
@@ -11,7 +10,6 @@ import { MessagesService } from '../../messages/messages.service';
         <h1>Error</h1>
         <p>It looks like you either don't have access to this page, or it doesn't exist.</p>
         <p><a routerLink="/">Back to homepage</a></p>
-        <!-- <app-login [redirect]="redirecturl"></app-login> -->
       </mat-card>
     </div>
 
@@ -28,7 +26,6 @@ export class ErrorComponent implements OnInit, OnDestroy {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private messagesService: MessagesService
   ) {
 
   }

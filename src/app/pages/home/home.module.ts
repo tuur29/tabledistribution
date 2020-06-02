@@ -3,7 +3,6 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 import { MaterialModule } from '../../material.module';
-import { LoginModule } from '../../parts/login/login.module';
 import { ExplanationModule } from '../../parts/explanation/explanation.module';
 import { InputTableModule } from '../../parts/inputtable/inputtable.module';
 import { RoundsModule } from '../../parts/rounds/rounds.module';

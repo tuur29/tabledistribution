@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { GlobalsService } from 'app/services/globals.service';
 import { MessagesService } from '../messages/messages.service';
@@ -32,7 +32,6 @@ export class SaveNameDialog implements OnInit {
   ) {}
 
   ngOnInit() {
-    
   }
 
   setName(oldname: string) {

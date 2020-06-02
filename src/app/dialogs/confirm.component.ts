@@ -1,7 +1,6 @@
 import { Component, OnInit, ViewChild, HostListener } from '@angular/core';
 import { MatDialogRef } from '@angular/material';
 import { GlobalsService } from 'app/services/globals.service';
-import { MessagesService } from '../messages/messages.service';
 
 @Component({
   selector: 'app-savename',
@@ -34,7 +33,6 @@ export class ConfirmDialog implements OnInit {
   ) {}
 
   ngOnInit() {
-    
   }
 
   onNoClick(): void {

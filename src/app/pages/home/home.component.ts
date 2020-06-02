@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { GlobalsService } from 'app/services/globals.service';
 import { SavesService } from 'app/services/saves.service';
 import { getCombinations } from './combinations';
@@ -24,16 +24,16 @@ import { getCombinations } from './combinations';
 
         <div class="cardsgrid">
 
-          <div *ngIf="globals.auth.token">
+          <div>
             <app-inputtable #inputtable (onGenerateTable)="onGenerateTable($event)"></app-inputtable>
           </div>
 
-          <div *ngIf="globals.auth.token" [style.display]="(generated ? 'block' : 'none')">
+          <div [style.display]="(generated ? 'block' : 'none')">
             <app-rounds #rounds></app-rounds>
             <app-customrounds #customrounds></app-customrounds>
           </div>
 
-          <mat-accordion *ngIf="globals.auth.token" class="small" [style.display]="(generated ? 'block' : 'none')">
+          <mat-accordion class="small" [style.display]="(generated ? 'block' : 'none')">
 
             <app-nameslist #nameslist></app-nameslist>
             &nbsp;
