@@ -1,7 +1,8 @@
 import { Component, OnInit, EventEmitter, Output } from '@angular/core';
-import { GlobalsService } from 'app/services/globals.service';
-import { FormBuilder, FormGroup, FormArray, Validators, FormControl } from '@angular/forms';
+import { FormBuilder, FormGroup, FormArray } from '@angular/forms';
 import { LocalStorage, LocalStorageService } from 'ngx-store';
+import { Observable } from 'rxjs';
+import { GlobalsService } from 'app/services/globals.service';
 
 @Component({
   selector: 'app-inputtable',
@@ -129,7 +130,8 @@ export class InputTableComponent implements OnInit {
   subscribeForm() {
     if (this.sub) this.sub.unsubscribe();
 
-    this.sub = this.form.valueChanges.subscribe(() => {
+    // The new chrome colour picker sends a constant stream of events when selecting a colour, throttle this to hide performance issues
+    this.sub = this.form.valueChanges.throttle(() => Observable.interval(500)).subscribe(() => {
       this.localStorageService.set("table", this.form.value.groups);
       this.onGenerateTable.emit(this.form.value.groups);
     });
